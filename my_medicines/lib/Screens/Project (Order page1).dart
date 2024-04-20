@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 void main(){
-  runApp(order());
+  runApp(order1());
 }
 
-class order extends StatelessWidget {
+class order1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +60,7 @@ class _page11State extends State<page11> {
                 icon: Icon(Icons.search),
               ),
               IconButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Order page)');
-                },
+                onPressed: (){},
                 icon: Icon(Icons.shopping_bag_rounded),
               ),
               IconButton(
@@ -259,7 +257,176 @@ class _page11State extends State<page11> {
         body: ListView(
           children: [
             Column(
-              children: [],
+              children: [
+
+                Container(
+                  margin: EdgeInsets.only(top: 10),
+                  child: Text('My Order' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 25),)
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  margin: EdgeInsets.only(left: 35),
+                  child: Row(
+                    children: [
+
+                      IconButton(
+                        onPressed: (){
+                          Navigator.pushNamed(context, '/Project (Order page1)');
+                        }, 
+                        icon: Container(
+                          height: 30,
+                          width: 80,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Color.fromRGBO(67, 72, 75, 1),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text('Pending' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.white),),
+                        )
+                      ),
+
+                      SizedBox(width: 16,),
+
+                      IconButton(
+                        onPressed: (){
+                          Navigator.pushNamed(context, '/Project (Order page2)');
+                        }, 
+                        icon: Container(
+                          height: 30,
+                          width: 80,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text('Delivered' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.black),),
+                        )
+                      ),
+
+                      SizedBox(width: 16,),
+
+                      IconButton(
+                        onPressed: (){
+                          Navigator.pushNamed(context, '/Project (Order page3)');
+                        }, 
+                        icon: Container(
+                          height: 30,
+                          width: 80,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text('Cancelled' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.black),),
+                        )
+                      ),
+
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 20,),
+
+                Container(
+                  margin: EdgeInsets.only(left: 20),
+                  
+                  child: Stack(
+                    children: [
+                  
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(color: Colors.black)
+                        ),
+                        height: 190,
+                        width: 350,
+                      ),
+                  
+                      Container(
+                        margin: EdgeInsets.only(top: 10 , left: 10),
+                        child:Row(
+                          children: [
+                            Text('Order #483' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                            Container(
+                              margin: EdgeInsets.only(left: 140),
+                              child: Text('17/4/2024' , style: TextStyle(color: Colors.grey , fontWeight: FontWeight.bold),),
+                            ),
+                          ],
+                        ),
+                      ),
+                  
+                      Container(
+                        margin: EdgeInsets.only(top: 110 , left: 86),
+                        width: 200,
+                        child: Row(
+                          children: [
+                            Text('Order status: ' , style: TextStyle(fontSize: 17 , fontWeight: FontWeight.bold),),
+                            Text('PENDING' , style: TextStyle(fontSize: 17 , color: Color.fromRGBO(207, 98, 18, 1)),),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.only(top: 45 , left: 10),
+                        child: Row(
+                          children: [
+                            Text('Tracking number: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                            Text('IK287368838' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.only(top: 80 , left: 10),
+                        child: Row(
+                          children: [
+                            Row(
+                              children: [
+                                Text('Quantity: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                                Text('2' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                              ],
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 100),
+                              child: Row(
+                                children: [
+                                  Text('Subtotal: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                                  Text('JOD 10.35' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.only(left: 130 , top: 140),
+                        child: IconButton(
+                          onPressed: (){}, 
+                          icon: Container(
+                            alignment: Alignment.center,
+                            width: 80,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              color: Colors.grey[200],
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.black)
+                            ),
+                            child: Text('Details' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+                          )
+                        ),
+                      ),
+                      
+                    ]
+                  ),
+                ),
+
+                SizedBox(height: 30,),
+
+              ],
             )
           ],
         ),

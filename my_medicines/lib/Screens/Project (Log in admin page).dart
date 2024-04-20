@@ -181,7 +181,7 @@ class _page20State extends State<page20> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             _formKey.currentState!.save();
-                            Navigator.pushNamed(context, '/Project (Admin home page)');
+                            Navigator.pushNamed(context, '/Project (Admin add or update or delete page)');
                           }
                           else{
                             print('error');

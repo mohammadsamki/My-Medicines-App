@@ -79,11 +79,11 @@ class _page18State extends State<page18> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: Colors.white,
+                  color: Color.fromARGB(255, 229, 248, 248),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.05),
+                      color: Color.fromRGBO(0, 0, 0, 0.253),
                       offset: Offset(0, 5),
                     )
                   ]
@@ -99,11 +99,11 @@ class _page18State extends State<page18> {
                         child: IconButton(
                           onPressed: (){
                             setState(() {
-                              if(checkColor1 == Color.fromRGBO(142, 142, 142, 1)){
+                              if(checkColor1 == Color.fromRGBO(190, 189, 189, 1)){
                                 checkColor1 = Color.fromRGBO(80, 138, 123, 1);
                               }
                               else{
-                                checkColor1 = Color.fromRGBO(142, 142, 142, 1);
+                                checkColor1 = Color.fromRGBO(190, 189, 189, 1);
                               }
                             });
                           }, 
@@ -122,14 +122,8 @@ class _page18State extends State<page18> {
                               child: Stack(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(left: 12 , top: 18),
-                                    child: CircleAvatar(
-                                      radius: 28,
-                                      backgroundColor: Color.fromRGBO(234, 202, 183, 0.2),
-                                    ),
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 15),
+                                    height: 200,
+                                    color: Colors.white,
                                     child: Image.asset('assets/Images/Amoxicillin.jpeg' , width: 80,)
                                   )
                                 ]
@@ -173,11 +167,11 @@ class _page18State extends State<page18> {
                                           }
                                         });
                                       }, 
-                                      icon: Icon(Icons.remove , color: Colors.grey , size: 16,)
+                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
                                     ),
                                   ),
                                   Container(
-                                    child: Text('$counter1' , style: TextStyle(color: Colors.grey , fontSize: 16),)
+                                    child: Text('$counter1' , style: TextStyle(color: Colors.black , fontSize: 16),)
                                   ),
                                   Container(
                                     width: 33,
@@ -189,7 +183,7 @@ class _page18State extends State<page18> {
                                       }, 
                                       icon: Container(
                                         margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.grey , size: 16,)
+                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
                                       )
                                     ),
                                   ),
@@ -208,11 +202,11 @@ class _page18State extends State<page18> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 229, 248, 248),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.05),
+                      color: Color.fromRGBO(0, 0, 0, 0.253),
                       offset: Offset(0, 5),
                     )
                   ]
@@ -228,11 +222,11 @@ class _page18State extends State<page18> {
                         child: IconButton(
                           onPressed: (){
                             setState(() {
-                              if(checkColor2 == Color.fromRGBO(142, 142, 142, 1)){
+                              if(checkColor2 == Color.fromRGBO(190, 189, 189, 1)){
                                 checkColor2 = Color.fromRGBO(80, 138, 123, 1);
                               }
                               else{
-                                checkColor2 = Color.fromRGBO(142, 142, 142, 1);
+                                checkColor2 = Color.fromRGBO(190, 189, 189, 1);
                               }
                             });
                           }, 
@@ -247,7 +241,8 @@ class _page18State extends State<page18> {
                               bottomLeft: Radius.circular(22)
                             ),
                             child: Container(
-                              color: Color.fromRGBO(230, 228, 227, 1),
+                              height: 200,
+                              color: Colors.white,
                               child: Image.asset('assets/Images/Doxycycline.jpg' , width: 80,)
                             )
                           ),
@@ -288,11 +283,11 @@ class _page18State extends State<page18> {
                                           }
                                         });
                                       }, 
-                                      icon: Icon(Icons.remove , color: Colors.grey , size: 16,)
+                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
                                     ),
                                   ),
                                   Container(
-                                    child: Text('$counter2' , style: TextStyle(color: Colors.grey , fontSize: 16),)
+                                    child: Text('$counter2' , style: TextStyle(color: Colors.black , fontSize: 16),)
                                   ),
                                   Container(
                                     width: 33,
@@ -304,7 +299,7 @@ class _page18State extends State<page18> {
                                       }, 
                                       icon: Container(
                                         margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.grey , size: 16,)
+                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
                                       )
                                     ),
                                   ),
@@ -323,11 +318,11 @@ class _page18State extends State<page18> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: Colors.white,
+                  color: const Color.fromARGB(255, 229, 248, 248),
                   boxShadow: [
                     BoxShadow(
                       blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.05),
+                      color: Color.fromRGBO(0, 0, 0, 0.253),
                       offset: Offset(0, 5),
                     )
                   ]
@@ -343,11 +338,11 @@ class _page18State extends State<page18> {
                         child: IconButton(
                           onPressed: (){
                             setState(() {
-                              if(checkColor3 == Color.fromRGBO(142, 142, 142, 1)){
+                              if(checkColor3 == Color.fromRGBO(190, 189, 189, 1)){
                                 checkColor3 = Color.fromRGBO(80, 138, 123, 1);
                               }
                               else{
-                                checkColor3 = Color.fromRGBO(142, 142, 142, 1);
+                                checkColor3 = Color.fromRGBO(190, 189, 189, 1);
                               }
                             });
                           }, 
@@ -362,7 +357,8 @@ class _page18State extends State<page18> {
                               bottomLeft: Radius.circular(22)
                             ),
                             child: Container(
-                              color: Color.fromRGBO(218, 217, 217, 1),
+                              height: 200,
+                              color: Colors.white,
                               child: Image.asset('assets/Images/Cephalexin.jpg' , width: 80,)
                             )
                           ),
@@ -403,11 +399,11 @@ class _page18State extends State<page18> {
                                           }
                                         });
                                       }, 
-                                      icon: Icon(Icons.remove , color: Colors.grey , size: 16,)
+                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
                                     ),
                                   ),
                                   Container(
-                                    child: Text('$counter3' , style: TextStyle(color: Colors.grey , fontSize: 16),)
+                                    child: Text('$counter3' , style: TextStyle(color: Colors.black , fontSize: 16),)
                                   ),
                                   Container(
                                     width: 33,
@@ -419,7 +415,7 @@ class _page18State extends State<page18> {
                                       }, 
                                       icon: Container(
                                         margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.grey , size: 16,)
+                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
                                       )
                                     ),
                                   ),
@@ -537,7 +533,7 @@ class _page18State extends State<page18> {
                             backgroundColor: Color.fromRGBO(52, 52, 52, 1)
                           ),
                           onPressed: (){
-                            Navigator.pushNamed(context, '/Project (Check out page)');
+                            Navigator.pushNamed(context, '/Project (Check out page1)');
                           }, 
                           child: Text('Proceed to checkout' , style: TextStyle(color: Colors.white , fontSize: 18),),
                         ),

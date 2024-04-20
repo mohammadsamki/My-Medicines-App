@@ -59,15 +59,13 @@ class _page10State extends State<page10> {
               ),
 
               IconButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Search page)');
-                },
+                onPressed: (){},
                 icon: Icon(Icons.search),
               ),
 
               IconButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Order page)');
+                  Navigator.pushNamed(context, '/Project (Order page1)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),

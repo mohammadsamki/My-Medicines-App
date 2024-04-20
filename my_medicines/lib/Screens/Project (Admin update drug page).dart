@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 void main(){
-  runApp(adminHome());
+  runApp(adminUpdateDrug());
 }
 
-class adminHome extends StatelessWidget {
+class adminUpdateDrug extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home : page21()
+      home : page28()
     );
   }
 
 }
 
-class page21 extends StatefulWidget {
+class page28 extends StatefulWidget {
 
   @override
-  _page21State createState() => _page21State();
+  _page28State createState() => _page28State();
 
 }
 
-class _page21State extends State<page21> {
+class _page28State extends State<page28> {
 
   final  _formKey = GlobalKey<FormState>();
   double _sliderValue = 1.0;

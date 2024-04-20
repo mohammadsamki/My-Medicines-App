@@ -8,7 +8,7 @@ import 'Screens/Project (Verification code page).dart';
 import 'Screens/Project (Create new password page).dart';
 import 'Screens/Project (Home page).dart';
 import 'Screens/Project (Search page).dart';
-import 'Screens/Project (Order page).dart';
+import 'Screens/Project (Order page1).dart';
 import 'Screens/Project (For inquirie page).dart';
 import 'Screens/Project (Location page).dart';
 import 'Screens/Project (Amoxicillin page).dart';
@@ -18,8 +18,15 @@ import 'Screens/Project (Ciprofloxacin page).dart';
 import 'Screens/Project (Your cart page).dart';
 import 'Screens/Project (Admin or User page).dart';
 import 'Screens/Project (Log in admin page).dart';
-import 'Screens/Project (Admin home page).dart';
-import 'Screens/Project (Check out page).dart';
+import 'Screens/Project (Admin add drug page).dart';
+import 'Screens/Project (Check out page1).dart';
+import 'Screens/Project (Check out page2).dart';
+import 'Screens/Project (Check out page3).dart';
+import 'Screens/Project (Order page2).dart';
+import 'Screens/Project (Order page3).dart';
+import 'Screens/Project (Admin add or update or delete page).dart';
+import 'Screens/Project (Admin update drug page).dart';
+import 'Screens/Project (Admin delete drug page).dart';
 
 void main(){
   runApp(Medicine());
@@ -41,7 +48,7 @@ class Medicine extends StatelessWidget {
         '/Project (Create new password page)': (context) => page8(),
         '/Project (Home page)': (context) => page9(),
         '/Project (Search page)': (context) => page10(),
-        '/Project (Order page)': (context) => page11(),
+        '/Project (Order page1)': (context) => page11(),
         '/Project (For inquirie page)': (context) => page12(),
         '/Project (Location page)': (context) => page13(),
         '/Project (Amoxicillin page)': (context) => page14(),
@@ -51,8 +58,15 @@ class Medicine extends StatelessWidget {
         '/Project (Your cart page)': (context) => page18(),
         '/Project (Admin or User page)': (context) => page19(),
         '/Project (Log in admin page)': (context) => page20(),
-        '/Project (Admin home page)': (context) => page21(),
-        '/Project (Check out page)': (context) => page22(),
+        '/Project (Admin add drug page)': (context) => page21(),
+        '/Project (Check out page1)': (context) => page22(),
+        '/Project (Check out page2)': (context) => page23(),
+        '/Project (Check out page3)': (context) => page24(),
+        '/Project (Order page2)': (context) => page25(),
+        '/Project (Order page3)': (context) => page26(),
+        '/Project (Admin add or update or delete page)':(context) => page27(),
+        '/Project (Admin update drug page)': (context) => page28(),
+        '/Project (Admin delete drug page)': (context) => page29(),
       },
       home: page1(),
     );
@@ -113,13 +127,6 @@ class _page1State extends State<page1> {
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.black),
                     borderRadius: BorderRadius.all(Radius.circular(30)),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Color.fromARGB(255, 136, 134, 134),
-                        offset: Offset(0, 3),
-                        blurRadius: 4
-                      )
-                    ]
                   ),
                   width: 200,
                   height: 50,

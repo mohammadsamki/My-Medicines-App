@@ -70,9 +70,7 @@ class _page9State extends State<page9> {
           bottom: TabBar(
             tabs: [
               IconButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Home page)');
-                },
+                onPressed: (){},
                 icon: Icon(Icons.home),
               ),
               IconButton(
@@ -83,7 +81,7 @@ class _page9State extends State<page9> {
               ),
               IconButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Order page)');
+                  Navigator.pushNamed(context, '/Project (Order page1)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),

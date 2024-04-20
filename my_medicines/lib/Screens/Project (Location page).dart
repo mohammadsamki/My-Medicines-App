@@ -61,14 +61,12 @@ class _page13State extends State<page13> {
               ),
               IconButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Order page)');
+                  Navigator.pushNamed(context, '/Project (Order page1)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),
               IconButton(
-                onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Location page)');
-                },
+                onPressed: (){},
                 icon: Icon(Icons.location_on),
               ),
             ],
