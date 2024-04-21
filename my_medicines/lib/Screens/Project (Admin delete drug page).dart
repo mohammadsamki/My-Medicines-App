@@ -116,12 +116,12 @@ class _page29State extends State<page29> {
                             showDialog(
                               context: context,
                               builder: (BuildContext context) => CupertinoAlertDialog(
-                                title: Center(child: Text('Add Medicine')),
+                                title: Center(child: Text('Delete Medicine')),
                                 content: Container(
                                   height: 50,
                                   child: Column(
                                     children: [
-                                      Text('Medication added'),
+                                      Text('Medication deleted'),
                                       Icon(Icons.check_circle_outline , size: 30,),
                                     ],
                                   ),
@@ -139,13 +139,7 @@ class _page29State extends State<page29> {
                             print('error');
                           }
                         }, 
-                        child: Row(
-                          children: [
-                            Icon(Icons.add_circle , color: Colors.grey,),
-                            SizedBox(width: 4),
-                            Text('Delete Medicine' , style: TextStyle(fontSize: 17),)
-                          ],
-                        )
+                        child:Text('Delete Medicine' , style: TextStyle(fontSize: 20),)
                       ),
                     ),
 

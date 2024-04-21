@@ -61,7 +61,7 @@ class _page27State extends State<page27> {
                         backgroundColor: Colors.white,
                         child: IconButton(
                           onPressed: (){
-                            Navigator.pop(context);
+                            Navigator.pushNamed(context, '/Project (Admin or User page)');
                           },
                           icon: Container(
                             margin: EdgeInsets.only(right: 1.3),
@@ -119,7 +119,7 @@ class _page27State extends State<page27> {
                     backgroundColor: Color.fromRGBO(133, 216, 219, 1)
                   ),
                   onPressed: (){
-                    Navigator.pushNamed(context, '/Project (Admin update drug page)');
+                    Navigator.pushNamed(context, '/Project (Admin update drug page1)');
                   }, 
                   child: Text('Update Drug' , style: TextStyle(fontSize: 25 , fontWeight: FontWeight.bold , color: Colors.white),),
                 ),

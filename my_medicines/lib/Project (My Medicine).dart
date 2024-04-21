@@ -25,8 +25,14 @@ import 'Screens/Project (Check out page3).dart';
 import 'Screens/Project (Order page2).dart';
 import 'Screens/Project (Order page3).dart';
 import 'Screens/Project (Admin add or update or delete page).dart';
-import 'Screens/Project (Admin update drug page).dart';
+import 'Screens/Project (Admin update drug page1).dart';
+import 'Screens/Project (Admin update drug page2).dart';
 import 'Screens/Project (Admin delete drug page).dart';
+import 'Screens/Project (Update drug name page).dart';
+import 'Screens/Project (Update drug price page).dart';
+import 'Screens/Project (Update drug note page).dart';
+import 'Screens/Project (Update drug image page).dart';
+import 'Screens/Project (Update drug rating page).dart';
 
 void main(){
   runApp(Medicine());
@@ -65,8 +71,14 @@ class Medicine extends StatelessWidget {
         '/Project (Order page2)': (context) => page25(),
         '/Project (Order page3)': (context) => page26(),
         '/Project (Admin add or update or delete page)':(context) => page27(),
-        '/Project (Admin update drug page)': (context) => page28(),
+        '/Project (Admin update drug page1)': (context) => page28(),
         '/Project (Admin delete drug page)': (context) => page29(),
+        '/Project (Admin update drug page2)': (context) => page30(),
+        '/Project (Update drug name page)':(context) => page31(),
+        '/Project (Update drug price page)':(context) => page32(),
+        '/Project (Update drug note page)':(context) => page33(),
+        '/Project (Update drug image page)':(context) => page34(),
+        '/Project (Update drug rating page)': (context) => page35(),
       },
       home: page1(),
     );

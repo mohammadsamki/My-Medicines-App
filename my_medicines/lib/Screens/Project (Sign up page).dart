@@ -358,7 +358,7 @@ class _page5State extends State<page5> {
                       margin: EdgeInsets.only(bottom: 2),
                       child: IconButton(
                         onPressed: (){
-                          Navigator.pushNamed(context, '/Project (Log in page)');
+                          Navigator.pushNamed(context, '/Project (Log in user page)');
                         },
                         icon: Text('Log In' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold , decoration: TextDecoration.underline , color: Colors.grey))
                       ),

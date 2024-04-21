@@ -165,7 +165,9 @@ class _page24State extends State<page24> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color.fromRGBO(52, 52, 52, 1)
                   ),
-                  onPressed: (){}, 
+                  onPressed: (){
+                    Navigator.pushNamed(context, '/Project (Home page)');
+                  }, 
                   child: Text('Continue shopping' , style: TextStyle(color: Colors.white , fontSize: 18),),
                 ),
               ),

@@ -48,7 +48,7 @@ class _page3State extends State<page3> {
                   alignment: Alignment.topLeft,
                   child: IconButton(
                     onPressed: (){
-                      Navigator.pop(context);
+                      Navigator.pushNamed(context, '/Project (Home page)');
                     },
                     icon:Icon(Icons.arrow_back)
                   ),

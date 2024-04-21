@@ -271,7 +271,7 @@ class _page8State extends State<page8>{
                                     content: Icon(Icons.check_circle_outline , size: 30,),
                                     actions: [
                                       TextButton(
-                                        onPressed: () => Navigator.pushNamed(context, '/Project (Log in page)'),
+                                        onPressed: () => Navigator.pushNamed(context, '/Project (Log in user page)'),
                                         child: Text('Cancel'),
                                       ),
                                     ]
