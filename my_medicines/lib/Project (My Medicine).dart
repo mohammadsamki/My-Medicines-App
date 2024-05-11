@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'Screens/Project (Info page).dart';
 import 'Screens/Project (Registration page).dart';
 import 'Screens/Project (Log in user page).dart';
@@ -34,7 +36,11 @@ import 'Screens/Project (Update drug note page).dart';
 import 'Screens/Project (Update drug image page).dart';
 import 'Screens/Project (Update drug rating page).dart';
 
-void main(){
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(Medicine());
 }
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1027997293594",
+    "project_id": "fir-my-medicines-app",
+    "storage_bucket": "fir-my-medicines-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027997293594:android:cfc4d5f93bc5a0dfba85a3",
+        "android_client_info": {
+          "package_name": "com.example.my_medicines"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGX1U2FAaopkK59RMhYXeWxXG_BzTsieE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

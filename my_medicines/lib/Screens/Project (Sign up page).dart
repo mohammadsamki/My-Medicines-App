@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 void main(){
   runApp(signUp());
@@ -24,11 +25,26 @@ class page5 extends StatefulWidget {
 
 class _page5State extends State<page5> {
 
+  Future register(String email , String password) async {
+    print(email);
+    try {
+      await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email , password: password);
+          print('success');
+      return null;
+    } 
+    catch (e) {
+      print('error');
+    }
+  }
+
   final  _formKey = GlobalKey<FormState>();
 
   bool _passwordVisible = true;
   bool _passwordVisible1 = true;
   final TextEditingController _pass = TextEditingController();
+  String? _email;
+  String? _password;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +183,9 @@ class _page5State extends State<page5> {
                           ),  
                         ),
                         onSaved: (newValue1) {
-                          print('Email: $newValue1');
+                          setState(() {
+                            _email = newValue1;
+                          });
                         },
                       ),
                     ),
@@ -213,7 +231,9 @@ class _page5State extends State<page5> {
                           ),  
                         ),
                         onSaved: (newValue) {
-                          print('Password: $newValue');
+                          setState(() {
+                            _password = newValue;
+                          });
                         },
                       ),
                     ),
@@ -275,6 +295,7 @@ class _page5State extends State<page5> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             _formKey.currentState!.save();
+                            register(_email! , _password!);
                           }
                           else{
                             print('error');
