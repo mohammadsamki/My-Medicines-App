@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import '../Auth_Services.dart';
 
 void main(){
   runApp(signUp());
@@ -24,19 +24,6 @@ class page5 extends StatefulWidget {
 }
 
 class _page5State extends State<page5> {
-
-  Future register(String email , String password) async {
-    print(email);
-    try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email , password: password);
-          print('success');
-      return null;
-    } 
-    catch (e) {
-      print('error');
-    }
-  }
 
   final  _formKey = GlobalKey<FormState>();
 
@@ -295,7 +282,7 @@ class _page5State extends State<page5> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()){
                             _formKey.currentState!.save();
-                            register(_email! , _password!);
+                            sign_Up(_email! , _password!);
                           }
                           else{
                             print('error');
@@ -343,23 +330,34 @@ class _page5State extends State<page5> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Facebook.webp'),
+                    IconButton(
+                      onPressed: (){},
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Facebook.webp'),
+                      ),
                     ),
 
                     SizedBox(width: 50),
                     
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Google.png'),
+                    IconButton(
+                      onPressed: (){
+                        googleSignIn();
+                      },
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Google.png'),
+                      ),
                     ),
 
                     SizedBox(width: 50),
 
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Twitter.webp'),
+                    IconButton(
+                      onPressed: (){},
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Twitter.webp'),
+                      ),
                     ),
 
                   ],

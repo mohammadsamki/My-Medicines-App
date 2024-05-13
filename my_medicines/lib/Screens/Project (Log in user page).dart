@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../Auth_Services.dart';
 
 void main(){
   runApp(logInUser());
@@ -229,23 +230,34 @@ class _page4State extends State<page4> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
 
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Facebook.webp'),
+                    IconButton(
+                      onPressed: (){},
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Facebook.webp'),
+                      ),
                     ),
 
                     SizedBox(width: 50),
                     
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Google.png'),
+                    IconButton(
+                      onPressed: (){
+                        googleSignIn();
+                      },
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Google.png'),
+                      ),
                     ),
 
                     SizedBox(width: 50),
 
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundImage: AssetImage('assets/Images/Twitter.webp'),
+                    IconButton(
+                      onPressed: (){},
+                      icon: CircleAvatar(
+                        radius: 18,
+                        backgroundImage: AssetImage('assets/Images/Twitter.webp'),
+                      ),
                     ),
 
                   ],

@@ -1,26 +1,43 @@
 {
   "project_info": {
-    "project_number": "1027997293594",
-    "project_id": "fir-my-medicines-app",
-    "storage_bucket": "fir-my-medicines-app.appspot.com"
+    "project_number": "522755901798",
+    "project_id": "flutterfirebase-9b077",
+    "storage_bucket": "flutterfirebase-9b077.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1027997293594:android:cfc4d5f93bc5a0dfba85a3",
+        "mobilesdk_app_id": "1:522755901798:android:1d7b004e1699da0347e0a7",
         "android_client_info": {
-          "package_name": "com.example.my_medicines"
+          "package_name": "com.example.flutter_with_firebase"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "522755901798-cuq15e6g5f458465b1qk1bk9duu1c77a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyBGX1U2FAaopkK59RMhYXeWxXG_BzTsieE"
+          "current_key": "AIzaSyB1DZzbq4daGKrUxFZ0Jzg9CyWg53UG3nM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522755901798-cuq15e6g5f458465b1qk1bk9duu1c77a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "522755901798-v1fsnuhpkgukdqaentp4703vc3ro895f.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.flutterWithFirebase"
+              }
+            }
+          ]
         }
       }
     }
