@@ -1,38 +1,101 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+var db = FirebaseFirestore.instance;
 
-void main(){
-  runApp(search());
-}
+class medicine {
+  String Name;
+  double Price;
+  List Image;
 
-class search extends StatelessWidget {
+  medicine(this.Name, this.Price, this.Image);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: page10(),
-    );
+  String toString() {
+    return 'Medicine(Name: $Name, Price: $Price, Images: $Image)';
   }
 
+  factory medicine.fromMap(Map<String, dynamic> map) {
+    return medicine(
+      map['Name'],
+      map['Price'],
+      List<String>.from(map['Image']),
+    );
+  }
 }
 
-class page10 extends StatefulWidget {
+class FirestoreService {
+  static Future<List<medicine>> getMedicines(String collection) async {
+    try {
+      final querySnapshot = await db.collection(collection).get();
+      return querySnapshot.docs
+          .map((e) => medicine.fromMap(e.data() as Map<String, dynamic>))
+          .toList();
+    } catch (e) {
+      print('Error fetching medicines: $e');
+      return [];
+    }
+  }
+}
+
+class SearchPage extends StatefulWidget {
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  List<medicine> _allResults = [];
+  List<dynamic> _resultList = [];
+  final TextEditingController _searchController = TextEditingController();
 
   @override
-  _page10State createState() => _page10State();
+  void initState() {
+    super.initState();
+    _searchController.addListener(_onSearchChanged);
+    _fetchMedicines(); // Fetch medicines on initialization
+  }
 
-}
+  @override
+  void dispose() {
+    _searchController.removeListener(_onSearchChanged);
+    _searchController.dispose();
+    super.dispose();
+  }
 
-class _page10State extends State<page10> {
+  _onSearchChanged() {
+    searchResultList(); // Update search results when the text changes
+  }
 
-  final _formKey = GlobalKey<FormState>();
-
+  _fetchMedicines() async {
+    var medicines = await FirestoreService.getMedicines('Medicines');
+    setState(() {
+      _allResults = medicines;
+    });
+    searchResultList(); // Initialize the search results with all medicines
+  }
   int _selectedIndex = 0;
+
+  searchResultList() {
+    var showResults = [];
+    if (_searchController.text != '') {
+      for (var medicine in _allResults) {
+        var name = medicine.Name.toLowerCase();
+        if (name.contains(_searchController.text.toLowerCase())) {
+          showResults.add(medicine);
+        }
+      }
+    } else {
+      showResults = List.from(_allResults);
+    }
+
+    setState(() {
+      _resultList = showResults; // Update the result list with the search results
+    });
+  }
 
   var modeColor = Colors.white;
   var buttonColor = Colors.black;
   var buttonTextColor = Colors.black;
-
-  TextEditingController textarea = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -40,50 +103,41 @@ class _page10State extends State<page10> {
       initialIndex: 1,
       length: 4,
       child: Scaffold(
-
         appBar: AppBar(
-
           backgroundColor: Color.fromARGB(255, 157, 228, 238),
-
-          title: Center(
-            child: Text('My Medicines' , style: TextStyle(fontSize: 24 , fontWeight: FontWeight.bold))
+          title: CupertinoSearchTextField(
+            backgroundColor: Colors.white,
+            controller: _searchController,
           ),
           bottom: TabBar(
             tabs: [
-
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.pushNamed(context, '/Project (Home page)');
                 },
                 icon: Icon(Icons.home),
               ),
-
               IconButton(
-                onPressed: (){},
+                onPressed: () {},
                 icon: Icon(Icons.search),
               ),
-
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.pushNamed(context, '/Project (Order page1)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),
-
               IconButton(
-                onPressed: (){
+                onPressed: () {
                   Navigator.pushNamed(context, '/Project (Location page)');
                 },
                 icon: Icon(Icons.location_on),
               ),
-
             ],
           ),
-          
           actions: [
             Stack(
               children: [
-
                 Container(
                   margin: EdgeInsets.only(right: 13),
                   child: Icon(
@@ -92,21 +146,17 @@ class _page10State extends State<page10> {
                     color: Colors.black,
                   ),
                 ),
-
                 Container(
-                  margin: EdgeInsets.only(top: 8 , left: 17),
+                  margin: EdgeInsets.only(top: 8, left: 17),
                   child: CircleAvatar(
                     backgroundColor: Colors.red,
                     radius: 3.5,
                   ),
                 ),
-
               ],
             ),
           ],
-          
         ),
-
         drawer: ClipRRect(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(40),
@@ -114,13 +164,12 @@ class _page10State extends State<page10> {
           ),
           child: Drawer(
             child: Container(
-              color: modeColor,
+              color: Colors.white,
               child: ListView(
-                      
                 children: [
                   DrawerHeader(
                     decoration: BoxDecoration(
-                      color: modeColor,
+                      color: Colors.white,
                     ),
                     child: Center(
                       child: Row(
@@ -129,26 +178,35 @@ class _page10State extends State<page10> {
                             margin: EdgeInsets.only(left: 30),
                             child: CircleAvatar(
                               radius: 25,
-                              backgroundImage: AssetImage('assets/Images/Mohammad.jpg'),
+                              backgroundImage:
+                                  AssetImage('assets/Images/Mohammad.jpg'),
                             ),
                           ),
                           Container(
-                            margin: EdgeInsets.only(top: 40 , left: 15),
+                            margin: EdgeInsets.only(top: 40, left: 15),
                             child: Column(
                               children: [
-                            
                                 Container(
                                   width: 140,
-                                  child: Text('Mohammad Obeidat' , style: TextStyle(fontSize: 13 , fontWeight: FontWeight.bold , color: buttonColor),)
+                                  child: Text(
+                                    'Mohammad Obeidat',
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
                                 ),
-
                                 SizedBox(height: 8),
-                            
                                 Container(
                                   width: 140,
-                                child: Text('mohammadahmad23@gmail.com' , style: TextStyle(fontSize: 11 , fontWeight: FontWeight.bold , color: buttonColor))
+                                  child: Text(
+                                    'mohammadahmad23@gmail.com',
+                                    style: TextStyle(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                  ),
                                 ),
-                            
                               ],
                             ),
                           ),
@@ -156,39 +214,51 @@ class _page10State extends State<page10> {
                       ),
                     ),
                   ),
-                      
                   ListTile(
                     leading: Icon(Icons.account_circle),
-                    title: Text('My profile' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    title: Text('My profile',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 20)),
                     selected: _selectedIndex == 2,
                     onTap: () {},
                   ),
-                      
                   ListTile(
                     leading: Icon(Icons.settings_outlined),
-                    title: Text('Setting' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    title: Text('Setting',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 20)),
                     selected: _selectedIndex == 2,
                     onTap: () {},
                   ),
-                      
                   ListTile(
                     leading: Icon(Icons.email_outlined),
-                    title: Text('For inquirie' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    title: Text('For inquirie',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 20)),
                     selected: _selectedIndex == 2,
                     onTap: () {
-                      Navigator.pushNamed(context, '/Project (For inquirie page)');
+                      Navigator.pushNamed(
+                          context, '/Project (For inquirie page)');
                     },
                   ),
-                      
                   ListTile(
                     leading: Icon(Icons.error_outline),
-                    title: Text('About us' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    title: Text('About us',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                            fontSize: 20)),
                     selected: _selectedIndex == 2,
                     onTap: () {
-                      Navigator.pushNamed(context, '/Project (Info page)');       
+                      Navigator.pushNamed(context, '/Project (Info page)');
                     },
                   ),
-
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     child: Container(
@@ -196,23 +266,19 @@ class _page10State extends State<page10> {
                       margin: EdgeInsets.only(top: 40),
                       child: Row(
                         children: [
-                    
                           Container(
                             height: 35,
                             margin: EdgeInsets.only(left: 45),
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: modeColor
-                              ),
-                              onPressed: (){
+                                  backgroundColor: Colors.white),
+                              onPressed: () {
                                 setState(() {
-                                  if((modeColor == Colors.black)) {
-                                    modeColor = Colors.white;
-                                    buttonColor = Colors.black;
-                                    buttonTextColor = Colors.black;
-                                  }
+                                  modeColor = Colors.white;
+                                  buttonColor = Colors.black;
+                                  buttonTextColor = Colors.black;
                                 });
-                              }, 
+                              },
                               child: Row(
                                 children: [
                                   Icon(Icons.light_mode),
@@ -221,24 +287,19 @@ class _page10State extends State<page10> {
                               ),
                             ),
                           ),
-                    
                           SizedBox(width: 10),
-                    
                           Container(
                             height: 35,
                             child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: modeColor
-                              ),
-                              onPressed: (){
+                                  backgroundColor: Colors.white),
+                              onPressed: () {
                                 setState(() {
-                                  if (modeColor == Colors.white) {
-                                    modeColor = Colors.black;
-                                    buttonColor = Colors.white;
-                                    buttonTextColor = Colors.white;
-                                  }
+                                  modeColor = Colors.black;
+                                  buttonColor = Colors.white;
+                                  buttonTextColor = Colors.white;
                                 });
-                              }, 
+                              },
                               child: Row(
                                 children: [
                                   Icon(Icons.dark_mode_outlined),
@@ -247,85 +308,68 @@ class _page10State extends State<page10> {
                               ),
                             ),
                           ),
-                    
                         ],
                       ),
                     ),
                   ),
-                      
                 ],
-                      
               ),
             ),
           ),
         ),
-
-        body: Column(
-          children: [
-
-            Form(
-              key: _formKey,
-              child: Container(
-                margin: EdgeInsets.only(left: 45 , top: 30),
-                width: 300,
-                child: TextFormField(
-                  style: TextStyle(fontSize: 17),
-                  validator: (value) {
-                    if (value!.isEmpty){
-                      return "Enter something";
-                    }
-                    return  null;
-                  },
-                  controller: textarea,
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(33)),
-                      borderSide: BorderSide(),
-                    ),
-                    prefixIcon: Container(
-                      child: Icon(Icons.search),
+        body: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 1.7 / 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+          ),
+          itemCount: _resultList.length,
+          itemBuilder: (context, index) {
+            final medicine = _resultList[index];
+            return Card(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Image.network(
+                      medicine.Image.isNotEmpty 
+                      ? medicine.Image[0] 
+                      : '',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
                     ),
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Center(
+                          child: Text(
+                            medicine.Name,
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            '\$${medicine.Price}',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey[600],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),
-
-            SizedBox(height: 20),
-
-            Container(
-              margin: EdgeInsets.only(left: 50),
-              width: 200,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color.fromARGB(255, 158, 193, 223)
-                ),
-                onPressed: (){
-                  if (_formKey.currentState!.validate()){
-                    _formKey.currentState!.save();
-                  }
-                }, 
-                child: Text('Search' , style: TextStyle(fontSize: 20 , color: Colors.black))
-              ),
-            ),
-
-            Container(
-              margin: EdgeInsets.only(left: 50),
-              width: 160,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 199, 227, 250)
-                ),
-                onPressed: (){
-                  textarea.clear();
-                }, 
-                child: Text('Clear' , style: TextStyle(fontSize: 18 , color: Colors.black),)
-              ),
-            ),
-            
-          ],
+            );
+          },
         ),
-
       ),
     );
   }

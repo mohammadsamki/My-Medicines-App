@@ -1,18 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+var db = FirebaseFirestore.instance;
 
-void main(){
-  runApp(home());
-}
+class medicine{
+  String Name;
+  double Price;
+  List Image;
 
-class home extends StatelessWidget {
+  medicine(this.Name , this.Price , this.Image);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: page9(),
-    );
+  String toString() {
+    return 'medicine(Name: $Name, Price: $Price, Image: $Image)';
   }
 
+  factory medicine.fromMap(Map<String , dynamic> map) {
+    print(map['Name']);
+    return medicine(
+      map['Name'],
+      map['Price'],
+      List<String>.from(
+        map['Image'],
+      ),
+    );
+  }
+}
+
+class fireStore {
+
+  static Future<List<medicine>> getMedicines(String collection) async {
+    try {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection).get();
+        for(var snapshot in querySnapshot.docs){
+          var documentId = snapshot.id;
+          print('Document ID: $documentId');
+        }
+      final medicines = querySnapshot.docs.map((e) => medicine.fromMap(e.data() as Map<String , dynamic>)).toList();
+      print(medicines);
+      return medicines;
+    }
+    catch (e) {
+      print('Error fetching medicines: $e');
+      return[];
+    }
+  }
 }
 
 class page9 extends StatefulWidget {
@@ -23,6 +57,26 @@ class page9 extends StatefulWidget {
 }
 
 class _page9State extends State<page9> {
+
+  File? galaryFile;
+  final picker = ImagePicker();
+
+  Future getImageFile (ImageSource img) async {
+    final chosenFile = await picker.pickImage(source: img);
+    XFile? newFile = chosenFile;
+
+    setState(() {
+      if (newFile != null) {
+        galaryFile = File(chosenFile!.path);
+      }
+      else{
+        print('No file found');
+      }
+    });
+  }
+
+  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines');
+
 
   int _selectedIndex = 0;
 
@@ -414,91 +468,81 @@ class _page9State extends State<page9> {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                              
-                        Container(
-                          width: 133,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: IconButton(
-                                  onPressed: (){
-                                    Navigator.pushNamed(context, '/Project (Amoxicillin page)');
-                                  },
-                                  icon: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset('assets/Images/Amoxicillin.jpeg' , height: 120))
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text('Amoxicillin' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15)),
-                              Text('JOD 11.78' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-                            ],
-                          ),
-                        ),
-                              
-                        Container(
-                          width: 133,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: IconButton(
-                                  onPressed: (){
-                                    Navigator.pushNamed(context, '/Project (Doxycycline page)');
-                                  },
-                                  icon: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset('assets/Images/Doxycycline.jpg' , height: 120)
-                                  )
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text('Doxycycline' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15)),
-                              Text('JOD 12.80' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-                            ],
-                          ),
-                        ),
-                              
-                        Container(
-                          width: 133,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: IconButton(
-                                  onPressed: (){
-                                    Navigator.pushNamed(context, '/Project (Cephalexin page)');
-                                  },
-                                  icon: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset('assets/Images/Cephalexin.jpg' , height: 120)
-                                  )
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text('Cephalexin' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15)),
-                              Text('JOD 12.76' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-                            ],
-                          ),
-                        ),
-                              
-                        Container(
-                          width: 133,
-                          child: Column(
-                            children: [
-                              Container(
-                                child: IconButton(
-                                  onPressed: (){
-                                    Navigator.pushNamed(context, '/Project (Ciprofloxacin page)');
-                                  },
-                                  icon: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset('assets/Images/Ciprofloxacin.png' , height: 118)
-                                  )
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text('Ciprofloxacin' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
-                              Text('JOD 38.15' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20)),
-                            ],
+
+                        IconButton(
+                          onPressed: (){},
+                          icon: Container(
+                            width: 300,
+                            child: FutureBuilder(
+                              future: medicineFuture, 
+                              builder: (context , snapshot){
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
+                                }
+                                else if(snapshot.hasError) {
+                                  return Center(child: Text('Error: ${snapshot.error}'));
+                                }
+                                else if(!snapshot.hasData || snapshot.data!.isEmpty) {
+                                  return Center(child: Text('No medicines found'));
+                                }
+                                else {
+                                  final medicines = snapshot.data!;
+                                  return GridView.builder(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: 1.7 / 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                    ), 
+                                    itemCount: medicines.length,
+                                    itemBuilder: (context , index) {
+                                      final medicine = medicines[index];
+                                      return Card(
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: Image.network(
+                                                medicine.Image.isNotEmpty
+                                                  ? medicine.Image[0]
+                                                  : '',
+                                                fit: BoxFit.cover,
+                                                width: double.infinity,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: EdgeInsets.all(8),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Center(
+                                                    child: Text(
+                                                      medicine.Name,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Center(
+                                                    child: Text(
+                                                      '\$${medicine.Price}',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.grey[600]
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ]
+                                        ),
+                                      );
+                                    }
+                                  );
+                                }
+                              }
+                            ),
                           ),
                         ),
                               

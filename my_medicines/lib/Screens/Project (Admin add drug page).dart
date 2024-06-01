@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-
-void main(){
-  runApp(adminAddDrug());
-}
-
-class adminAddDrug extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home : page21()
-    );
-  }
-
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'dart:io';
+var db = FirebaseFirestore.instance;
 
 class page21 extends StatefulWidget {
 
@@ -26,7 +15,26 @@ class page21 extends StatefulWidget {
 class _page21State extends State<page21> {
 
   final  _formKey = GlobalKey<FormState>();
-  double _sliderValue = 1.0;
+  String _productName = '';
+  double _productPrice = 0.0;
+  String _productDescription = '';
+  List _productImage = [];
+  // File? galaryFile;
+  // final picker = ImagePicker();
+
+  // Future getImageFile (ImageSource img) async {
+  //   final chosenFile = await picker.pickImage(source: img);
+  //   XFile? newFile = chosenFile;
+
+  //   setState(() {
+  //     if (newFile != null) {
+  //       galaryFile = File(chosenFile!.path);
+  //     }
+  //     else{
+  //       print('No file found');
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context){
@@ -105,7 +113,7 @@ class _page21State extends State<page21> {
                                 border: OutlineInputBorder()
                               ),
                               onSaved: (newValue) {
-                                print('Drug Name: $newValue');
+                                _productName = newValue!;
                               },
                             ),
                           ),
@@ -126,7 +134,7 @@ class _page21State extends State<page21> {
                               border: OutlineInputBorder()
                             ),
                             onSaved: (newValue) {
-                              print('Drug Price: $newValue');
+                              _productPrice = double.parse(newValue!);
                             },
                           ),
                         ),
@@ -151,7 +159,7 @@ class _page21State extends State<page21> {
                         ),
                         maxLines: 5,
                         onSaved: (newValue) {
-                          print('Drug Notes: $newValue');
+                          _productDescription = newValue!;
                         },
                       ),
                     ),
@@ -159,51 +167,46 @@ class _page21State extends State<page21> {
                     SizedBox(height: 20),
 
                     Container(
-                      height: 40,
-                      width: 160,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0, 3),
-                          )
-                        ]
-                      ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white
+                      width: 300,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Product Image',
+                          border: OutlineInputBorder(),
                         ),
-                        onPressed: (){}, 
-                        child: Row(
-                          children: [
-                            Icon(Icons.attach_file , size: 22,),
-                            SizedBox(width: 5),
-                            Text('Drug Image')
-                          ],
-                        )
+                        onSaved: (newValue) {
+                          _productImage = [newValue];
+                        }
                       ),
                     ),
 
-                    SizedBox(height: 20,),
-
-                    Container(
-                      child: Slider(
-                        value: _sliderValue,
-                        min: 1.0,
-                        max: 10.0,
-                        thumbColor: Colors.blue,
-                        inactiveColor: Color.fromARGB(255, 223, 219, 219),
-                        activeColor: Color.fromARGB(255, 106, 231, 231),
-                        onChanged: (value){
-                          setState(() {
-                            _sliderValue = value;
-                            print('Rating: $_sliderValue');
-                          });
-                        },
-                      ),
-                    ),
-                    Text('Rating Drug: $_sliderValue / 10.0'),
+                    // Container(
+                    //   height: 40,
+                    //   width: 160,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.all(Radius.circular(30)),
+                    //     boxShadow: [
+                    //       BoxShadow(
+                    //         color: Colors.grey,
+                    //         offset: Offset(0, 3),
+                    //       )
+                    //     ]
+                    //   ),
+                    //   child: ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: Colors.white
+                    //     ),
+                    //     onPressed: (){
+                    //       getImageFile(ImageSource.camera);
+                    //     }, 
+                    //     child: Row(
+                    //       children: [
+                    //         Icon(Icons.attach_file , size: 22,),
+                    //         SizedBox(width: 5),
+                    //         Text('Drug Image')
+                    //       ],
+                    //     )
+                    //   ),
+                    // ),
 
                     SizedBox(height: 60),
 
@@ -217,6 +220,12 @@ class _page21State extends State<page21> {
                         onPressed: (){
                           if(_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
+                            db.collection('Medicines').add({
+                    'Name': _productName,
+                    'Price': _productPrice,
+                    'Description': _productDescription,
+                    'Image': _productImage,
+                  }).then((value) => print('Added Data With ID: ${value.id}'));
                             showDialog(
                               context: context,
                               builder: (BuildContext context) => CupertinoAlertDialog(
@@ -254,6 +263,22 @@ class _page21State extends State<page21> {
                     ),
 
                     SizedBox(height: 20,),
+
+                    Container(
+                      width: 200,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color.fromRGBO(140, 248, 239, 1),
+                          side: BorderSide()
+                        ),
+                        onPressed: (){
+                          Navigator.pushNamed(context, '/Project (Home page)');
+                        }, 
+                        
+                            child: Text('Home Page' , style: TextStyle(fontSize: 20),)
+                         
+                      ),
+                    ),
 
                   ],
                 )

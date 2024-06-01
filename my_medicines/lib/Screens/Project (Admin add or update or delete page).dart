@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(adminAorUorD());
-}
-
-class adminAorUorD extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: page27(),
-    );
-  }
-
-}
-
 class page27 extends StatefulWidget {
 
   @override
