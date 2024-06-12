@@ -2,24 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'Project (Medicine page).dart';
 var db = FirebaseFirestore.instance;
 
 class medicine{
   String Name;
+  String Description;
+  String Warnings;
+  String howShouldITakeIt;
+  String sideEffects;
   double Price;
   List Image;
 
-  medicine(this.Name , this.Price , this.Image);
+  medicine(this.Name , this.Description , this.Warnings , this.howShouldITakeIt , this.sideEffects , this.Price , this.Image);
 
   @override
   String toString() {
-    return 'medicine(Name: $Name, Price: $Price, Image: $Image)';
+    return 'Medicine(Name: $Name, Description: $Description , Warnings: $Warnings , How should I take it: $howShouldITakeIt , Side effects: $sideEffects , Price: $Price, Image: $Image)';
   }
 
   factory medicine.fromMap(Map<String , dynamic> map) {
     print(map['Name']);
     return medicine(
       map['Name'],
+      map['Description'],
+      map['Warnings'],
+      map['How should I take it'],
+      map['Side effects'],
       map['Price'],
       List<String>.from(
         map['Image'],
@@ -260,6 +269,15 @@ class _page9State extends State<page9> {
                     },
                   ),
 
+                  ListTile(
+                    leading: Icon(Icons.error_outline),
+                    title: Text('Your cart' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    selected: _selectedIndex == 2,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/Project (Your cart page)');       
+                    },
+                  ),
+
                   ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     child: Container(
@@ -470,7 +488,9 @@ class _page9State extends State<page9> {
                       children: [
 
                         IconButton(
-                          onPressed: (){},
+                          onPressed: (){
+                          
+                          },
                           icon: Container(
                             width: 300,
                             child: FutureBuilder(
@@ -498,44 +518,51 @@ class _page9State extends State<page9> {
                                     itemBuilder: (context , index) {
                                       final medicine = medicines[index];
                                       return Card(
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: Image.network(
-                                                medicine.Image.isNotEmpty
-                                                  ? medicine.Image[0]
-                                                  : '',
-                                                fit: BoxFit.cover,
-                                                width: double.infinity,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> page14(
+                                              Name: medicine.Name, Description: medicine.Description,Warnings: medicine.Warnings, howShouldITakeIt: medicine.howShouldITakeIt, sideEffects: medicine.sideEffects, Price: medicine.Price, Image: medicine.Image,
+                                            )));
+                                          },
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: Image.network(
+                                                  medicine.Image.isNotEmpty
+                                                    ? medicine.Image[0]
+                                                    : '',
+                                                  fit: BoxFit.cover,
+                                                  width: double.infinity,
+                                                ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsets.all(8),
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Center(
-                                                    child: Text(
-                                                      medicine.Name,
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        fontWeight: FontWeight.bold,
+                                              Padding(
+                                                padding: EdgeInsets.all(8),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    Center(
+                                                      child: Text(
+                                                        medicine.Name,
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  Center(
-                                                    child: Text(
-                                                      '\$${medicine.Price}',
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        color: Colors.grey[600]
+                                                    Center(
+                                                      child: Text(
+                                                        '\$${medicine.Price}',
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.grey[600]
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
+                                                  ],
+                                                ),
                                               ),
-                                            ),
-                                          ]
+                                            ]
+                                          ),
                                         ),
                                       );
                                     }

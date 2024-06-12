@@ -1,19 +1,39 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import '../Auth_Services.dart';
+import 'Project (Home page).dart';
 
-void main(){
-  runApp(logInUser());
+class home extends StatefulWidget {
+
+  @override
+  State<home> createState() => _homeState();
+
 }
 
-class logInUser extends StatelessWidget {
+class _homeState extends State<home> {
+
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+    return firebaseApp;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home : page4()
+    return Scaffold(
+      body: FutureBuilder(
+        future: _initializeFirebase(), 
+        builder: (context , snapshot){
+          if (snapshot.connectionState == ConnectionState.done){
+            return page4();
+          }
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      ),
     );
   }
-
 }
 
 class page4 extends StatefulWidget {
@@ -31,8 +51,31 @@ class _page4State extends State<page4> {
   String em = 'mm';
   String pp = 'pp';
 
+  static Future<User?> loginUsingEmailPassword(
+    {
+      required String email,
+      required String password,
+      required BuildContext context
+    }
+  ) async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    User? user;
+    try {
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      user = userCredential.user;
+    } on FirebaseAuthException
+    catch (e) {
+      if(e.code == 'user-not-found'){
+        print('No user found for that email');
+      }
+    }
+    return user;
+  }
+
   @override
   Widget build(BuildContext context){
+    TextEditingController _emailController = TextEditingController();
+    TextEditingController _passwordController = TextEditingController();
     return Scaffold(
       body: ListView(
         children: [
@@ -92,12 +135,17 @@ class _page4State extends State<page4> {
                     Container(
                       width: 300,
                       child: TextFormField(
+                        controller: _emailController,
                         validator: (value) {
                           if(value!.isEmpty) {
                             return 'Please enter your email or username';
                           }
-                          if(value != em){
+                          if (value != _emailController){
                             return 'Wrong email';
+                          }
+                          if(value.contains('@gmail.com') == true){}
+                          else{
+                            return "not contain '@gmail.com'";
                           }
                           return null;
                         },
@@ -119,11 +167,12 @@ class _page4State extends State<page4> {
                     Container(
                       width: 300,
                       child: TextFormField(
+                        controller: _passwordController,
                         validator: (value) {
                           if(value!.isEmpty) {
                             return 'Please enter your password';
                           }
-                          if(value != pp){
+                          if (value != _passwordController){
                             return 'Wrong password';
                           }
                           return null;
@@ -179,14 +228,17 @@ class _page4State extends State<page4> {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Color.fromRGBO(21, 182, 155, 0.725)
                         ),
-                        onPressed: (){
+                        onPressed: () async {
                           if(_formKey.currentState!.validate()){
-                            _formKey.currentState!.save();
-                            Navigator.pushNamed(context, '/Project (Home page)');
+                            _formKey.currentState!.save(); }
+                          User? user = await loginUsingEmailPassword(email: _emailController.text, password: _passwordController.text, context: context);
+                          print(user);
+                          if(user != null){
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => page9()));
                           }
                           else{
                             print('error');
-                          }
+                          } 
                         }, 
                         child: Text('Log In' , style: TextStyle(color: Colors.white , fontSize: 20),)
                       ),

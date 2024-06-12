@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(order1());
-}
-
-class order1 extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: page11(),
-    );
-  }
-
-}
-
 class page11 extends StatefulWidget {
 
   @override
@@ -405,7 +390,9 @@ class _page11State extends State<page11> {
                       Container(
                         margin: EdgeInsets.only(left: 130 , top: 140),
                         child: IconButton(
-                          onPressed: (){}, 
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/Project (Details order page)');
+                          }, 
                           icon: Container(
                             alignment: Alignment.center,
                             width: 80,

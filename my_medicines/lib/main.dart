@@ -13,10 +13,7 @@ import 'Screens/Project (Search page).dart';
 import 'Screens/Project (Order page1).dart';
 import 'Screens/Project (For inquirie page).dart';
 import 'Screens/Project (Location page).dart';
-import 'Screens/Project (Amoxicillin page).dart';
-import 'Screens/Project (Doxycycline page).dart';
-import 'Screens/Project (Cephalexin page).dart';
-import 'Screens/Project (Ciprofloxacin page).dart';
+import 'Screens/Project (Medicine page).dart';
 import 'Screens/Project (Your cart page).dart';
 import 'Screens/Project (Admin or User page).dart';
 import 'Screens/Project (Log in admin page).dart';
@@ -29,6 +26,7 @@ import 'Screens/Project (Order page3).dart';
 import 'Screens/Project (Admin add or update or delete page).dart';
 import 'Screens/Project (Admin update drug page1).dart';
 import 'Screens/Project (Admin delete drug page).dart';
+import 'Screens/Project (Details order page).dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,10 +55,7 @@ class Medicine extends StatelessWidget {
         '/Project (Order page1)': (context) => page11(),
         '/Project (For inquirie page)': (context) => page12(),
         '/Project (Location page)': (context) => page13(),
-        '/Project (Amoxicillin page)': (context) => page14(),
-        '/Project (Doxycycline page)': (context) => page15(),
-        '/Project (Cephalexin page)': (context) => page16(),
-        '/Project (Ciprofloxacin page)': (context) => page17(),
+        '/Project (Medicine page)': (context) => page14(),
         '/Project (Your cart page)': (context) => page18(),
         '/Project (Admin or User page)': (context) => page19(),
         '/Project (Log in admin page)': (context) => page20(),
@@ -73,6 +68,7 @@ class Medicine extends StatelessWidget {
         '/Project (Admin add or update or delete page)':(context) => page27(),
         '/Project (Admin update drug page1)': (context) => page28(),
         '/Project (Admin delete drug page)': (context) => page29(),
+        '/Project (Details order page)': (context) => detailOrder(),
       },
       home: page1(),
     );

@@ -7,14 +7,17 @@ class medicine{
   String docId;
   String Name;
   String Description;
+  String Warnings;
+  String howShouldITakeIt;
+  String sideEffects;
   double Price;
   List Image;
 
-  medicine(this.docId , this.Name , this.Description , this.Price , this.Image);
+  medicine(this.docId , this.Name , this.Description , this.Warnings , this.howShouldITakeIt , this.sideEffects , this.Price , this.Image);
 
   @override
   String toString() {
-    return 'medicine(Name: $Name, Price: $Price, Image: $Image)';
+    return 'Medicine(Name: $Name, Description: $Description , Warnings: $Warnings , How should I take it: $howShouldITakeIt , Side effects: $sideEffects , Price: $Price, Image: $Image)';
   }
 
   factory medicine.fromMap(String ID , Map<String , dynamic> map) {
@@ -23,6 +26,9 @@ class medicine{
       ID,
       map['Name'],
       map['Description'],
+      map['Warnings'],
+      map['How should I take it'],
+      map['Side effects'],
       map['Price'],
       List<String>.from(
         map['Image'],
@@ -293,6 +299,33 @@ class _page28State extends State<page28> {
                                                                     }
                                                                   ),
                                                                   TextFormField(
+                                                                    initialValue: medicine.Warnings,
+                                                                    decoration: InputDecoration(
+                                                                      hintText: 'Medicine Warnings',
+                                                                    ),
+                                                                    onChanged: (newValue) {
+                                                                      medicine.Warnings = newValue;
+                                                                    }
+                                                                  ),
+                                                                  TextFormField(
+                                                                    initialValue: medicine.howShouldITakeIt,
+                                                                    decoration: InputDecoration(
+                                                                      hintText: 'How Should I Take It',
+                                                                    ),
+                                                                    onChanged: (newValue) {
+                                                                      medicine.howShouldITakeIt = newValue;
+                                                                    }
+                                                                  ),
+                                                                  TextFormField(
+                                                                    initialValue: medicine.sideEffects,
+                                                                    decoration: InputDecoration(
+                                                                      hintText: 'Medicine side effects',
+                                                                    ),
+                                                                    onChanged: (newValue) {
+                                                                      medicine.sideEffects = newValue;
+                                                                    }
+                                                                  ),
+                                                                  TextFormField(
                                                                     initialValue: medicine.Price.toString(),
                                                                     decoration: InputDecoration(
                                                                       hintText: 'Medicine Price',
@@ -330,7 +363,7 @@ class _page28State extends State<page28> {
                                                                     if(_formKey.currentState!.validate()){
                                                                       _formKey.currentState!.save();
                                                                       final update = db.collection('Medicines').doc(medicine.docId);
-                                                                      update.update({'Name': medicine.Name , 'Description': medicine.Description , 'Price': medicine.Price , 'Image': medicine.Image}).then(
+                                                                      update.update({'Name': medicine.Name , 'Description': medicine.Description , 'Warnings': medicine.Warnings , 'How should i take it': medicine.howShouldITakeIt , 'Side effects': medicine.sideEffects , 'Price': medicine.Price , 'Image': medicine.Image}).then(
                                                                         (value) => print("Document Snapshot successfully updated!"),
                                                                         onError: (e) => print("Error updating document $e"));
                                                                     }

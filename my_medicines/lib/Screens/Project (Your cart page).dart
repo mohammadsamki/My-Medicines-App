@@ -1,21 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+var db = FirebaseFirestore.instance;
 
-void main(){
-  runApp(yourCart());
-}
+class Cart{
+  String Name;
+  double Price;
+  List Image;
 
-class yourCart extends StatelessWidget {
+  Cart(this.Name , this.Price , this.Image);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home : page18()
-    );
+  String toString() {
+    return 'Cart(Name: $Name, Price: $Price, Image: $Image)';
   }
 
+  factory Cart.fromMap(Map<String , dynamic> map) {
+    print(map['Name']);
+    return Cart(
+      map['Name'],
+      map['Price'],
+      List<String>.from(
+        map['Image'],
+      ),
+    );
+  }
+}
+
+class fireStore {
+
+  static Future<List<Cart>> getCart(String collection) async {
+    try {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection).get();
+        for(var snapshot in querySnapshot.docs){
+          var documentId = snapshot.id;
+          print('Document ID: $documentId');
+        }
+      final cart = querySnapshot.docs.map((e) => Cart.fromMap(e.data() as Map<String , dynamic>)).toList();
+      print(cart);
+      return cart;
+    }
+    catch (e) {
+      print('Error fetching cart: $e');
+      return[];
+    }
+  }
 }
 
 class page18 extends StatefulWidget {
+
+  String? Name;
+  double? Price;
+  List? Image;
+  page18({Key? key , this.Name , this.Price , this.Image});
 
   @override
   _page18State createState() => _page18State();
@@ -24,13 +61,11 @@ class page18 extends StatefulWidget {
 
 class _page18State extends State<page18> {
 
-  var checkColor1 = Color.fromRGBO(80, 138, 123, 1);
-  var counter1 = 1;
-  var checkColor2 = Color.fromRGBO(80, 138, 123, 1);
-  var counter2 = 1;
-  var checkColor3 = Color.fromRGBO(80, 138, 123, 1);
-  var counter3 = 1;
+  late Future<List<Cart>> cartFuture = fireStore.getCart('Cart');
 
+  var checkColor1 = Color.fromRGBO(80, 138, 123, 1);
+  List counter1 = [1 , 2 , 5 , 7 , 9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,];
+  double totalPalance=0;
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -76,361 +111,167 @@ class _page18State extends State<page18> {
                 ],
               ),
 
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: Color.fromARGB(255, 229, 248, 248),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.253),
-                      offset: Offset(0, 5),
-                    )
-                  ]
-                ),
-                margin: EdgeInsets.only(top: 35),
-                child: Container(
-                  height: 110,
-                  width: 350,
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 292),
-                        child: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              if(checkColor1 == Color.fromRGBO(190, 189, 189, 1)){
-                                checkColor1 = Color.fromRGBO(80, 138, 123, 1);
-                              }
-                              else{
-                                checkColor1 = Color.fromRGBO(190, 189, 189, 1);
-                              }
-                            });
-                          }, 
-                          icon: Icon(Icons.check_box_rounded , color: checkColor1 , size: 26,)
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(22),
-                              bottomLeft: Radius.circular(22)
-                            ),
-                            child: Container(
-                              height: 110,
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    height: 200,
-                                    color: Colors.white,
-                                    child: Image.asset('assets/Images/Amoxicillin.jpeg' , width: 80,)
+              FutureBuilder(
+                future: cartFuture,
+                builder: (context , snapshot){
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  else if(snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  else if(!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No medicines found'));
+                  }
+                  else {
+                    final cart = snapshot.data!;
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: cart.length,
+                      itemBuilder: (context , index){
+                        final Cart = cart[index];
+                        print(Cart.Price);
+                        
+                        totalPalance+=(Cart.Price*counter1[index]);
+
+                        return Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(22)),
+                                color: Color.fromARGB(255, 229, 248, 248),
+                                boxShadow: [
+                                  BoxShadow(
+                                    blurRadius: 3,
+                                    color: Color.fromRGBO(0, 0, 0, 0.253),
+                                    offset: Offset(0, 5),
                                   )
                                 ]
-                              )
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 3),
-                                  child: Text('Amoxicillin' , style: TextStyle(fontWeight: FontWeight.bold),),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10 , top: 7),
-                                  child: Text('JOD 11.78' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 60 , left: 70),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              border: Border.all(color: Colors.black)
-                            ),
-                            child: Container(
-                              height: 30,
-                              width: 80,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 1.5),
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          if(counter1 >= 1){
-                                            counter1--;
-                                          }
-                                        });
-                                      }, 
-                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
+                              ),
+                              margin: EdgeInsets.only(top: 35),
+                              child: Container(
+                                height: 110,
+                                width: 350,
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.only(left: 292),
+                                      child: IconButton(
+                                        onPressed: (){
+                                          setState(() {
+                                            if(checkColor1 == Color.fromRGBO(190, 189, 189, 1)){
+                                              checkColor1 = Color.fromRGBO(80, 138, 123, 1);
+                                            }
+                                            else{
+                                              checkColor1 = Color.fromRGBO(190, 189, 189, 1);
+                                            }
+                                          });
+                                        }, 
+                                        icon: Icon(Icons.check_box_rounded , color: checkColor1 , size: 26,)
+                                      ),
                                     ),
-                                  ),
-                                  Container(
-                                    child: Text('$counter1' , style: TextStyle(color: Colors.black , fontSize: 16),)
-                                  ),
-                                  Container(
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          counter1++;
-                                        });
-                                      }, 
-                                      icon: Container(
-                                        margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
-                                      )
+                                    Row(
+                                      children: [
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(22),
+                                            bottomLeft: Radius.circular(22)
+                                          ),
+                                          child: Container(
+                                            height: 110,
+                                            child: Stack(
+                                              children: [
+                                                Container(
+                                                  height: 200,
+                                                  color: Colors.white,
+                                                  child: Image.network(
+                                                    Cart.Image.isNotEmpty
+                                                      ? Cart.Image[0]
+                                                      : '',
+                                                    fit: BoxFit.cover,
+                                                    width: 100,
+                                                  )
+                                                )
+                                              ]
+                                            )
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 15),
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.only(right: 3),
+                                                child: Text('${Cart.Name}' , style: TextStyle(fontWeight: FontWeight.bold),),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.only(left: 10 , top: 7),
+                                                child: Text('JOD ${Cart.Price}' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(top: 60 , left: 70),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                                            border: Border.all(color: Colors.black)
+                                          ),
+                                          child: Container(
+                                            height: 30,
+                                            width: 80,
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                  margin: EdgeInsets.only(left: 1.5),
+                                                  width: 33,
+                                                  child: IconButton(
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        if(counter1[index] >= 1){
+                                                          counter1[index] -= 1;
+                                                        }
+                                                      });
+                                                    }, 
+                                                    icon: Icon(Icons.remove , color: Colors.black , size: 16,)
+                                                  ),
+                                                ),
+                                                Container(
+                                                  child: Text('${counter1[index]}' , style: TextStyle(color: Colors.black , fontSize: 16),)
+                                                ),
+                                                Container(
+                                                  width: 33,
+                                                  child: IconButton(
+                                                    onPressed: (){
+                                                      setState(() {
+                                                        counter1[index] += 1;
+                                                      });
+                                                    }, 
+                                                    icon: Container(
+                                                      margin: EdgeInsets.only(right: 20),
+                                                      child: Icon(Icons.add , color: Colors.black , size: 16,)
+                                                    )
+                                                  ),
+                                                ),
+                                              ]
+                                            ),
+                                          ),
+                                        ),
+                                        
+                                      ],
                                     ),
-                                  ),
-                                ]
+                                  ]
+                                ),
                               ),
                             ),
-                          ),
-                          
-                        ],
-                      ),
-                    ]
-                  ),
-                ),
+                          ],
+                        );
+                      }
+                    );
+                  }
+                }
               ),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: const Color.fromARGB(255, 229, 248, 248),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.253),
-                      offset: Offset(0, 5),
-                    )
-                  ]
-                ),
-                margin: EdgeInsets.only(top: 30),
-                child: Container(
-                  height: 110,
-                  width: 350,
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 292),
-                        child: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              if(checkColor2 == Color.fromRGBO(190, 189, 189, 1)){
-                                checkColor2 = Color.fromRGBO(80, 138, 123, 1);
-                              }
-                              else{
-                                checkColor2 = Color.fromRGBO(190, 189, 189, 1);
-                              }
-                            });
-                          }, 
-                          icon: Icon(Icons.check_box_rounded , color: checkColor2 , size: 26,)
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(22),
-                              bottomLeft: Radius.circular(22)
-                            ),
-                            child: Container(
-                              height: 200,
-                              color: Colors.white,
-                              child: Image.asset('assets/Images/Doxycycline.jpg' , width: 80,)
-                            )
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(left: 1),
-                                  child: Text('Doxycycline' , style: TextStyle(fontWeight: FontWeight.bold),),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10 , top: 7),
-                                  child: Text('JOD 12.80' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 60 , left: 70),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              border: Border.all(color: Colors.black)
-                            ),
-                            child: Container(
-                              height: 30,
-                              width: 80,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 1.5),
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          if(counter2 >= 1){
-                                            counter2--;
-                                          }
-                                        });
-                                      }, 
-                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text('$counter2' , style: TextStyle(color: Colors.black , fontSize: 16),)
-                                  ),
-                                  Container(
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          counter2++;
-                                        });
-                                      }, 
-                                      icon: Container(
-                                        margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
-                                      )
-                                    ),
-                                  ),
-                                ]
-                              ),
-                            ),
-                          ),
-                          
-                        ],
-                      ),
-                    ]
-                  ),
-                ),
-              ),
-
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(22)),
-                  color: const Color.fromARGB(255, 229, 248, 248),
-                  boxShadow: [
-                    BoxShadow(
-                      blurRadius: 3,
-                      color: Color.fromRGBO(0, 0, 0, 0.253),
-                      offset: Offset(0, 5),
-                    )
-                  ]
-                ),
-                margin: EdgeInsets.only(top: 30),
-                child: Container(
-                  height: 110,
-                  width: 350,
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(left: 292),
-                        child: IconButton(
-                          onPressed: (){
-                            setState(() {
-                              if(checkColor3 == Color.fromRGBO(190, 189, 189, 1)){
-                                checkColor3 = Color.fromRGBO(80, 138, 123, 1);
-                              }
-                              else{
-                                checkColor3 = Color.fromRGBO(190, 189, 189, 1);
-                              }
-                            });
-                          }, 
-                          icon: Icon(Icons.check_box_rounded , color: checkColor3 , size: 26,)
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(22),
-                              bottomLeft: Radius.circular(22)
-                            ),
-                            child: Container(
-                              height: 200,
-                              color: Colors.white,
-                              child: Image.asset('assets/Images/Cephalexin.jpg' , width: 80,)
-                            )
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 15),
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: EdgeInsets.only(right: 3),
-                                  child: Text('Cephalexin' , style: TextStyle(fontWeight: FontWeight.bold),),
-                                ),
-                                Container(
-                                  margin: EdgeInsets.only(left: 10 , top: 7),
-                                  child: Text('JOD 12.76' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18),),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(top: 60 , left: 70),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(20)),
-                              border: Border.all(color: Colors.black)
-                            ),
-                            child: Container(
-                              height: 30,
-                              width: 80,
-                              child: Row(
-                                children: [
-                                  Container(
-                                    margin: EdgeInsets.only(left: 1.5),
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          if(counter3 >= 1){
-                                            counter3--;
-                                          }
-                                        });
-                                      }, 
-                                      icon: Icon(Icons.remove , color: Colors.black , size: 16,)
-                                    ),
-                                  ),
-                                  Container(
-                                    child: Text('$counter3' , style: TextStyle(color: Colors.black , fontSize: 16),)
-                                  ),
-                                  Container(
-                                    width: 33,
-                                    child: IconButton(
-                                      onPressed: (){
-                                        setState(() {
-                                          counter3++;
-                                        });
-                                      }, 
-                                      icon: Container(
-                                        margin: EdgeInsets.only(right: 20),
-                                        child: Icon(Icons.add , color: Colors.black , size: 16,)
-                                      )
-                                    ),
-                                  ),
-                                ]
-                              ),
-                            ),
-                          ),
-                          
-                        ],
-                      ),
-                    ]
-                  ),
-                ),
-              ),
-
               Container(
                 margin: EdgeInsets.only(top : 40),
                 decoration: BoxDecoration(
@@ -460,7 +301,7 @@ class _page18State extends State<page18> {
                             ),
                             Container(
                               margin: EdgeInsets.only(top: 30 , left: 148),
-                              child: Text('JOD 37.34' , style: TextStyle(fontWeight: FontWeight.bold),),
+                              child: Text('JOD ${totalPalance}' , style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                             
                           ],
@@ -488,7 +329,7 @@ class _page18State extends State<page18> {
                               child: Text('Shipping' , style: TextStyle(color: Colors.grey , fontSize: 16),)
                             ),
                             Container(
-                              margin: EdgeInsets.only(left: 190),
+                              margin: EdgeInsets.only(left: 185),
                               child: Text('Freeship' , style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                             
@@ -517,7 +358,7 @@ class _page18State extends State<page18> {
                             ),
                             Container(
                               margin: EdgeInsets.only(left: 170),
-                              child: Text('JOD 37.34' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                              child: Text('JOD ${totalPalance}' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
                             ),
                             
                           ],
