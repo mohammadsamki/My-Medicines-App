@@ -1,39 +1,58 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'Project (Medicine page).dart';
 var db = FirebaseFirestore.instance;
 
-class medicine {
+class medicine{
   String Name;
+  String Description;
+  String Warnings;
+  String howShouldITakeIt;
+  String sideEffects;
   double Price;
   List Image;
 
-  medicine(this.Name, this.Price, this.Image);
+  medicine(this.Name , this.Description , this.Warnings , this.howShouldITakeIt , this.sideEffects , this.Price , this.Image);
 
   @override
   String toString() {
-    return 'Medicine(Name: $Name, Price: $Price, Images: $Image)';
+    return 'Medicine(Name: $Name, Description: $Description , Warnings: $Warnings , How should I take it: $howShouldITakeIt , Side effects: $sideEffects , Price: $Price, Image: $Image)';
   }
 
-  factory medicine.fromMap(Map<String, dynamic> map) {
+  factory medicine.fromMap(Map<String , dynamic> map) {
+    print(map['Name']);
     return medicine(
       map['Name'],
+      map['Description'],
+      map['Warnings'],
+      map['How should I take it'],
+      map['Side effects'],
       map['Price'],
-      List<String>.from(map['Image']),
+      List<String>.from(
+        map['Image'],
+      ),
     );
   }
 }
 
-class FirestoreService {
+class fireStore {
+
   static Future<List<medicine>> getMedicines(String collection) async {
     try {
-      final querySnapshot = await db.collection(collection).get();
-      return querySnapshot.docs
-          .map((e) => medicine.fromMap(e.data() as Map<String, dynamic>))
-          .toList();
-    } catch (e) {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection).get();
+        for(var snapshot in querySnapshot.docs){
+          var documentId = snapshot.id;
+          print('Document ID: $documentId');
+        }
+      final medicines = querySnapshot.docs.map((e) => medicine.fromMap(e.data() as Map<String , dynamic>)).toList();
+      print(medicines);
+      return medicines;
+    }
+    catch (e) {
       print('Error fetching medicines: $e');
-      return [];
+      return[];
     }
   }
 }
@@ -67,7 +86,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _fetchMedicines() async {
-    var medicines = await FirestoreService.getMedicines('Medicines');
+    var medicines = await fireStore.getMedicines('Medicines');
     setState(() {
       _allResults = medicines;
     });
@@ -328,44 +347,55 @@ class _SearchPageState extends State<SearchPage> {
           itemBuilder: (context, index) {
             final medicine = _resultList[index];
             return Card(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Image.network(
-                      medicine.Image.isNotEmpty 
-                      ? medicine.Image[0] 
-                      : '',
-                      fit: BoxFit.cover,
-                      width: double.infinity,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context, MaterialPageRoute(
+                      builder: (context)=> page14(
+                        Name: medicine.Name, Description: medicine.Description,Warnings: medicine.Warnings, howShouldITakeIt: medicine.howShouldITakeIt, sideEffects: medicine.sideEffects, Price: medicine.Price, Image: medicine.Image,
+                      )
+                    )
+                  );
+                },
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: Image.network(
+                        medicine.Image.isNotEmpty 
+                        ? medicine.Image[0] 
+                        : '',
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Center(
-                          child: Text(
-                            medicine.Name,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
+                    Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Text(
+                              medicine.Name,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
-                        ),
-                        Center(
-                          child: Text(
-                            '\$${medicine.Price}',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[600],
+                          Center(
+                            child: Text(
+                              '\$${medicine.Price}',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey[600],
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

@@ -1,4 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+var db = FirebaseFirestore.instance;
+
+class order{
+  double subTotal;
+
+  order(this.subTotal);
+
+  @override
+  String toString() {
+    return 'Order{subTotal: $subTotal}';
+  }
+
+  factory order.fromMap(Map<String , dynamic> map) {
+    print(map['Name']);
+    return order(
+      map['Subtotal'],
+    );
+  }
+}
+
+class fireStore {
+
+  static Future<List<order>> getOrders(String collection) async {
+    try {
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection(collection).get();
+        for(var snapshot in querySnapshot.docs){
+          var documentId = snapshot.id;
+          print('Document ID: $documentId');
+        }
+      final orders = querySnapshot.docs.map((e) => order.fromMap(e.data() as Map<String , dynamic>)).toList();
+      print(orders);
+      return orders;
+    }
+    catch (e) {
+      print('Error fetching medicines: $e');
+      return[];
+    }
+  }
+}
 
 class page11 extends StatefulWidget {
 
@@ -8,6 +49,8 @@ class page11 extends StatefulWidget {
 }
 
 class _page11State extends State<page11> {
+
+  late Future<List<order>> orderFuture = fireStore.getOrders('Order');
 
   int _selectedIndex = 0;
 
@@ -312,106 +355,227 @@ class _page11State extends State<page11> {
                   ),
                 ),
 
-                SizedBox(height: 20,),
-
-                Container(
-                  margin: EdgeInsets.only(left: 20),
-                  
-                  child: Stack(
-                    children: [
-                  
-                      Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(color: Colors.black)
-                        ),
-                        height: 190,
-                        width: 350,
-                      ),
-                  
-                      Container(
-                        margin: EdgeInsets.only(top: 10 , left: 10),
-                        child:Row(
-                          children: [
-                            Text('Order #483' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
-                            Container(
-                              margin: EdgeInsets.only(left: 140),
-                              child: Text('17/4/2024' , style: TextStyle(color: Colors.grey , fontWeight: FontWeight.bold),),
-                            ),
-                          ],
-                        ),
-                      ),
-                  
-                      Container(
-                        margin: EdgeInsets.only(top: 110 , left: 86),
-                        width: 200,
-                        child: Row(
-                          children: [
-                            Text('Order status: ' , style: TextStyle(fontSize: 17 , fontWeight: FontWeight.bold),),
-                            Text('PENDING' , style: TextStyle(fontSize: 17 , color: Color.fromRGBO(207, 98, 18, 1)),),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        margin: EdgeInsets.only(top: 45 , left: 10),
-                        child: Row(
-                          children: [
-                            Text('Tracking number: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
-                            Text('IK287368838' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
-                          ],
-                        ),
-                      ),
-
-                      Container(
-                        margin: EdgeInsets.only(top: 80 , left: 10),
-                        child: Row(
-                          children: [
-                            Row(
+                FutureBuilder(
+                  future: orderFuture,
+                  builder: (context , snapshot){
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    else if(snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    else if(!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return Center(child: Text('No medicines found'));
+                    }
+                    else{
+                      final orders = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: 1,
+                        itemBuilder: (context , index){
+                          final order = orders[index];
+                          return Container(
+                            margin: EdgeInsets.only(left: 20),
+                            
+                            child: Stack(
                               children: [
-                                Text('Quantity: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
-                                Text('2' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
-                              ],
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 100),
-                              child: Row(
-                                children: [
-                                  Text('Subtotal: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
-                                  Text('JOD 10.35' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
+                            
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    border: Border.all(color: Colors.black)
+                                  ),
+                                  height: 190,
+                                  width: 350,
+                                ),
+                            
+                                Container(
+                                  margin: EdgeInsets.only(top: 10 , left: 10),
+                                  child:Row(
+                                    children: [
+                                      Text('Order #483' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 140),
+                                        child: Text('17/4/2024' , style: TextStyle(color: Colors.grey , fontWeight: FontWeight.bold),),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            
+                                Container(
+                                  margin: EdgeInsets.only(top: 110 , left: 86),
+                                  width: 200,
+                                  child: Row(
+                                    children: [
+                                      Text('Order status: ' , style: TextStyle(fontSize: 17 , fontWeight: FontWeight.bold),),
+                                      Text('PENDING' , style: TextStyle(fontSize: 17 , color: Color.fromRGBO(207, 98, 18, 1)),),
+                                    ],
+                                  ),
+                                ),
 
-                      Container(
-                        margin: EdgeInsets.only(left: 130 , top: 140),
-                        child: IconButton(
-                          onPressed: (){
-                            Navigator.pushNamed(context, '/Project (Details order page)');
-                          }, 
-                          icon: Container(
-                            alignment: Alignment.center,
-                            width: 80,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(20),
-                              border: Border.all(color: Colors.black)
+                                Container(
+                                  margin: EdgeInsets.only(top: 45 , left: 10),
+                                  child: Row(
+                                    children: [
+                                      Text('Tracking number: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                                      Text('IK287368838' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                                    ],
+                                  ),
+                                ),
+
+                                Container(
+                                  margin: EdgeInsets.only(top: 80 , left: 10),
+                                  child: Row(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text('Quantity: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                                          Text('2' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(left: 100),
+                                        child: Row(
+                                          children: [
+                                            Text('Subtotal: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                                            Text('JOD ${order.subTotal}' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+
+                                Container(
+                                  margin: EdgeInsets.only(left: 130 , top: 140),
+                                  child: IconButton(
+                                    onPressed: (){
+                                      Navigator.pushNamed(context, '/Project (Details order page)');
+                                    }, 
+                                    icon: Container(
+                                      alignment: Alignment.center,
+                                      width: 80,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(20),
+                                        border: Border.all(color: Colors.black)
+                                      ),
+                                      child: Text('Details' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+                                    )
+                                  ),
+                                ),
+                                
+                              ]
                             ),
-                            child: Text('Details' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
-                          )
-                        ),
-                      ),
+                          );
+                        }
+                      );
+                    }
+                  }
+                )
+                
+
+                // Container(
+                //   margin: EdgeInsets.only(left: 20),
+                  
+                //   child: Stack(
+                //     children: [
+                  
+                //       Container(
+                //         decoration: BoxDecoration(
+                //           color: Colors.white,
+                //           borderRadius: BorderRadius.circular(15),
+                //           border: Border.all(color: Colors.black)
+                //         ),
+                //         height: 190,
+                //         width: 350,
+                //       ),
+                  
+                //       Container(
+                //         margin: EdgeInsets.only(top: 10 , left: 10),
+                //         child:Row(
+                //           children: [
+                //             Text('Order #483' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                //             Container(
+                //               margin: EdgeInsets.only(left: 140),
+                //               child: Text('17/4/2024' , style: TextStyle(color: Colors.grey , fontWeight: FontWeight.bold),),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                  
+                //       Container(
+                //         margin: EdgeInsets.only(top: 110 , left: 86),
+                //         width: 200,
+                //         child: Row(
+                //           children: [
+                //             Text('Order status: ' , style: TextStyle(fontSize: 17 , fontWeight: FontWeight.bold),),
+                //             Text('PENDING' , style: TextStyle(fontSize: 17 , color: Color.fromRGBO(207, 98, 18, 1)),),
+                //           ],
+                //         ),
+                //       ),
+
+                //       Container(
+                //         margin: EdgeInsets.only(top: 45 , left: 10),
+                //         child: Row(
+                //           children: [
+                //             Text('Tracking number: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                //             Text('IK287368838' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                //           ],
+                //         ),
+                //       ),
+
+                //       Container(
+                //         margin: EdgeInsets.only(top: 80 , left: 10),
+                //         child: Row(
+                //           children: [
+                //             Row(
+                //               children: [
+                //                 Text('Quantity: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                //                 Text('2' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                //               ],
+                //             ),
+                //             Container(
+                //               margin: EdgeInsets.only(left: 100),
+                //               child: Row(
+                //                 children: [
+                //                   Text('Subtotal: ' , style: TextStyle(fontSize: 15 , fontWeight: FontWeight.bold , color: Colors.grey),),
+                //                   Text('JOD 10.35' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),),
+                //                 ],
+                //               ),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+
+                //       Container(
+                //         margin: EdgeInsets.only(left: 130 , top: 140),
+                //         child: IconButton(
+                //           onPressed: (){
+                //             Navigator.pushNamed(context, '/Project (Details order page)');
+                //           }, 
+                //           icon: Container(
+                //             alignment: Alignment.center,
+                //             width: 80,
+                //             height: 30,
+                //             decoration: BoxDecoration(
+                //               color: Colors.grey[200],
+                //               borderRadius: BorderRadius.circular(20),
+                //               border: Border.all(color: Colors.black)
+                //             ),
+                //             child: Text('Details' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 15),),
+                //           )
+                //         ),
+                //       ),
                       
-                    ]
-                  ),
-                ),
+                //     ]
+                //   ),
+                // ),
 
-                SizedBox(height: 30,),
+                // SizedBox(height: 30,),
 
               ],
             )

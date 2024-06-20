@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(checkOut3());
-}
-
-class checkOut3 extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home : page24()
-    );
-  }
-
-}
-
 class page24 extends StatefulWidget {
 
   @override
@@ -166,7 +151,7 @@ class _page24State extends State<page24> {
                     backgroundColor: Color.fromRGBO(52, 52, 52, 1)
                   ),
                   onPressed: (){
-                    Navigator.pushNamed(context, '/Project (Home page)');
+                    Navigator.pushNamed(context, '/Project (Order page1)');
                   }, 
                   child: Text('Continue shopping' , style: TextStyle(color: Colors.white , fontSize: 18),),
                 ),

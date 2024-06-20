@@ -173,29 +173,6 @@ class _page14State extends State<page14> {
                           Stack(
                             children: [
                       
-                              // Container(
-                              //   decoration: BoxDecoration(
-                              //     borderRadius: BorderRadius.all(Radius.circular(22)),
-                              //     shape: BoxShape.rectangle,
-                              //     boxShadow: [
-                              //       BoxShadow(
-                              //         color: Color.fromARGB(255, 206, 204, 204),
-                              //         blurRadius: 3,
-                              //       ),
-                              //     ]
-                              //   ),
-                              //   child: ClipRRect(
-                              //     borderRadius: BorderRadius.only(
-                              //       topRight: Radius.circular(22),
-                              //       topLeft: Radius.circular(22),
-                              //     ),
-                              //     child: Container(
-                              //       color: const Color.fromRGBO(255, 255, 255, 1),
-                              //       height: 3810,
-                              //     ),
-                              //   ),
-                              // ),
-                      
                               Column(
                                 children: [
                       

@@ -1,20 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main(){
-  runApp(checkOut2());
-}
-
-class checkOut2 extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home : page23()
-    );
-  }
-
-}
-
 class page23 extends StatefulWidget {
 
   @override
@@ -161,6 +146,7 @@ class _page23State extends State<page23> {
               SizedBox(height: 20,),
 
               Container(
+                width: 340,
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -170,8 +156,13 @@ class _page23State extends State<page23> {
                           if (value!.isEmpty) {
                             return 'Please enter number cart';
                           }
+                          if (value.length == 16){}
+                          else{
+                            return 'Please enter 16 digit number';
+                          }
                           return null;
                         },
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Card',
                         )
@@ -181,32 +172,7 @@ class _page23State extends State<page23> {
                 ),
               ),
 
-              SizedBox(height: 10,),
-
-              Container(
-                margin: EdgeInsets.only(left: 30),
-                child: Row(
-                  children: [
-                    Transform.scale(
-                      scale: 1.25,
-                      child: Checkbox(
-                        activeColor: Color.fromARGB(255, 56, 228, 62),
-                        side: BorderSide(
-                          color: Color.fromRGBO(190, 191, 196, 1)
-                        ),
-                        value: isChecked,   
-                        onChanged: (value){
-                          setState(() {
-                            isChecked = value!;
-                            print('Accept Terms and Conditions: $isChecked');
-                          });
-                        },
-                      ),
-                    ),
-                    Text('Accept Terms and Conditions' , style: TextStyle(color: Color.fromRGBO(87, 87, 87, 1) , fontSize: 16),),
-                  ],
-                ),
-              ),
+              SizedBox(height: 20,),
 
               Container(
                 height: 50,

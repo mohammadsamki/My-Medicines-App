@@ -3,20 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 var db = FirebaseFirestore.instance;
 
 class Cart{
+  String docId;
   String Name;
   double Price;
   List Image;
 
-  Cart(this.Name , this.Price , this.Image);
+  Cart(this.docId , this.Name , this.Price , this.Image);
 
   @override
   String toString() {
     return 'Cart(Name: $Name, Price: $Price, Image: $Image)';
   }
 
-  factory Cart.fromMap(Map<String , dynamic> map) {
+  factory Cart.fromMap(String ID , Map<String , dynamic> map) {
     print(map['Name']);
     return Cart(
+      ID,
       map['Name'],
       map['Price'],
       List<String>.from(
@@ -36,7 +38,7 @@ class fireStore {
           var documentId = snapshot.id;
           print('Document ID: $documentId');
         }
-      final cart = querySnapshot.docs.map((e) => Cart.fromMap(e.data() as Map<String , dynamic>)).toList();
+      final cart = querySnapshot.docs.map((e) => Cart.fromMap(e.id , e.data() as Map<String , dynamic>)).toList();
       print(cart);
       return cart;
     }
@@ -63,9 +65,15 @@ class _page18State extends State<page18> {
 
   late Future<List<Cart>> cartFuture = fireStore.getCart('Cart');
 
-  var checkColor1 = Color.fromRGBO(80, 138, 123, 1);
-  List counter1 = [1 , 2 , 5 , 7 , 9,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,];
-  double totalPalance=0;
+  List counter1 = [1 , 1];
+  double totalPalance = 0;
+
+  void Refresh(){
+    setState(() {
+      cartFuture = fireStore.getCart('Cart');
+    });
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -131,9 +139,8 @@ class _page18State extends State<page18> {
                       itemCount: cart.length,
                       itemBuilder: (context , index){
                         final Cart = cart[index];
-                        print(Cart.Price);
-                        
-                        totalPalance+=(Cart.Price*counter1[index]);
+    
+                        totalPalance += (Cart.Price * counter1[index]);
 
                         return Column(
                           children: [
@@ -159,16 +166,12 @@ class _page18State extends State<page18> {
                                       margin: EdgeInsets.only(left: 292),
                                       child: IconButton(
                                         onPressed: (){
-                                          setState(() {
-                                            if(checkColor1 == Color.fromRGBO(190, 189, 189, 1)){
-                                              checkColor1 = Color.fromRGBO(80, 138, 123, 1);
-                                            }
-                                            else{
-                                              checkColor1 = Color.fromRGBO(190, 189, 189, 1);
-                                            }
-                                          });
+                                          db.collection('Cart').doc(Cart.docId).delete().then(
+                                            (doc) => {print("Document deleted") , Refresh()},
+                                            onError: (e) => print("Error updating document $e"),
+                                          );
                                         }, 
-                                        icon: Icon(Icons.check_box_rounded , color: checkColor1 , size: 26,)
+                                        icon: Icon(Icons.cancel , color: Colors.grey , size: 24,)
                                       ),
                                     ),
                                     Row(

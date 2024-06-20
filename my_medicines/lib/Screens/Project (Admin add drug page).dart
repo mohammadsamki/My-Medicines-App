@@ -221,11 +221,11 @@ class _page21State extends State<page21> {
                           if(_formKey.currentState!.validate()) {
                             _formKey.currentState!.save();
                             db.collection('Medicines').add({
-                    'Name': _productName,
-                    'Price': _productPrice,
-                    'Description': _productDescription,
-                    'Image': _productImage,
-                  }).then((value) => print('Added Data With ID: ${value.id}'));
+                              'Name': _productName,
+                              'Price': _productPrice,
+                              'Description': _productDescription,
+                              'Image': _productImage,
+                            }).then((value) => print('Added Data With ID: ${value.id}'));
                             showDialog(
                               context: context,
                               builder: (BuildContext context) => CupertinoAlertDialog(

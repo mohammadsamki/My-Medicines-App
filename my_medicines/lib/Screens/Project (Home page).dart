@@ -270,7 +270,7 @@ class _page9State extends State<page9> {
                   ),
 
                   ListTile(
-                    leading: Icon(Icons.error_outline),
+                    leading: Icon(Icons.card_travel),
                     title: Text('Your cart' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
                     selected: _selectedIndex == 2,
                     onTap: () {
@@ -520,9 +520,13 @@ class _page9State extends State<page9> {
                                       return Card(
                                         child: GestureDetector(
                                           onTap: () {
-                                              Navigator.push(context, MaterialPageRoute(builder: (context)=> page14(
-                                              Name: medicine.Name, Description: medicine.Description,Warnings: medicine.Warnings, howShouldITakeIt: medicine.howShouldITakeIt, sideEffects: medicine.sideEffects, Price: medicine.Price, Image: medicine.Image,
-                                            )));
+                                            Navigator.push(
+                                              context, MaterialPageRoute(
+                                                builder: (context)=> page14(
+                                                  Name: medicine.Name, Description: medicine.Description,Warnings: medicine.Warnings, howShouldITakeIt: medicine.howShouldITakeIt, sideEffects: medicine.sideEffects, Price: medicine.Price, Image: medicine.Image,
+                                                )
+                                              )
+                                            );
                                           },
                                           child: Column(
                                             children: [
