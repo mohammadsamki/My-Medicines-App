@@ -142,7 +142,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
               IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/Project (Order page1)');
+                  Navigator.pushNamed(context, '/Project (Order page)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),
@@ -276,6 +276,14 @@ class _SearchPageState extends State<SearchPage> {
                     selected: _selectedIndex == 2,
                     onTap: () {
                       Navigator.pushNamed(context, '/Project (Info page)');
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.card_travel),
+                    title: Text('Your cart' , style: TextStyle(fontWeight: FontWeight.bold , color: Colors.grey , fontSize: 20)),
+                    selected: _selectedIndex == 2,
+                    onTap: () {
+                      Navigator.pushNamed(context, '/Project (Your cart page)');       
                     },
                   ),
                   ClipRRect(

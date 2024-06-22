@@ -10,7 +10,7 @@ import 'Screens/Project (Verification code page).dart';
 import 'Screens/Project (Create new password page).dart';
 import 'Screens/Project (Home page).dart';
 import 'Screens/Project (Search page).dart';
-import 'Screens/Project (Order page1).dart';
+import 'Screens/Project (Order page).dart';
 import 'Screens/Project (For inquirie page).dart';
 import 'Screens/Project (Location page).dart';
 import 'Screens/Project (Medicine page).dart';
@@ -21,8 +21,6 @@ import 'Screens/Project (Admin add drug page).dart';
 import 'Screens/Project (Check out page1).dart';
 import 'Screens/Project (Check out page2).dart';
 import 'Screens/Project (Check out page3).dart';
-import 'Screens/Project (Order page2).dart';
-import 'Screens/Project (Order page3).dart';
 import 'Screens/Project (Admin add or update or delete page).dart';
 import 'Screens/Project (Admin update drug page1).dart';
 import 'Screens/Project (Admin delete drug page).dart';
@@ -52,7 +50,7 @@ class Medicine extends StatelessWidget {
         '/Project (Create new password page)': (context) => page8(),
         '/Project (Home page)': (context) => page9(),
         '/Project (Search page)': (context) => SearchPage(),
-        '/Project (Order page1)': (context) => page11(),
+        '/Project (Order page)': (context) => page11(),
         '/Project (For inquirie page)': (context) => page12(),
         '/Project (Location page)': (context) => page13(),
         '/Project (Medicine page)': (context) => page14(),
@@ -63,8 +61,6 @@ class Medicine extends StatelessWidget {
         '/Project (Check out page1)': (context) => page22(),
         '/Project (Check out page2)': (context) => page23(),
         '/Project (Check out page3)': (context) => page24(),
-        '/Project (Order page2)': (context) => page25(),
-        '/Project (Order page3)': (context) => page26(),
         '/Project (Admin add or update or delete page)':(context) => page27(),
         '/Project (Admin update drug page1)': (context) => page28(),
         '/Project (Admin delete drug page)': (context) => page29(),

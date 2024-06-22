@@ -156,10 +156,10 @@ class _page23State extends State<page23> {
                           if (value!.isEmpty) {
                             return 'Please enter number cart';
                           }
-                          if (value.length == 16){}
-                          else{
-                            return 'Please enter 16 digit number';
-                          }
+                          // if (value.length == 16){}
+                          // else{
+                          //   return 'Please enter 16 digit number';
+                          // }
                           return null;
                         },
                         keyboardType: TextInputType.number,

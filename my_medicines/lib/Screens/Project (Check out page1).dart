@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'Project (Check out page3).dart';
 var db = FirebaseFirestore.instance;
 
 class check{
@@ -219,137 +220,152 @@ class _page22State extends State<page22> {
                         itemCount: 1,
                         itemBuilder: (context , index) {
                           final check = checks[index];
-                          return Form(
-                            key: _formKey,
-                            child: Column(
-                              children: [
-
-                                TextFormField(
-                                  initialValue: check.firstName,
-
-                                  validator: (value) {
-                                    if(value!.isEmpty){
-                                      return 'Field is required'; 
-                                    }
-                                    return null;
-                                  },
-
-                                  decoration: InputDecoration(
-                                    labelText: 'First name *',
-                                    labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context, MaterialPageRoute(
+                                  builder:(context) => page24(
+                                    address: check.address,
                                   ),
-
-                                ),
-
-                                SizedBox(height: 20,),
-
-                                TextFormField(
-                                  initialValue: check.lastName,
-
-                                  validator: (value) {
-                                    if(value!.isEmpty){
-                                      return 'Field is required'; 
-                                    }
-                                    return null;
-                                  },
-
-                                  decoration: InputDecoration(
-                                    labelText: 'Last name *',
-                                    labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
-                                  ),
-
-                                ),
-
-                                SizedBox(height: 20,),
-
-                                TextFormField(
-                                  initialValue: check.address,
-
-                                  validator: (value) {
-                                    if(value!.isEmpty){
-                                      return 'Field is required'; 
-                                    }
-                                    return null;
-                                  },
-
-                                  decoration: InputDecoration(
-                                    labelText: 'Address*',
-                                    labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
-                                  ),
-
-                                ),
-
-                                SizedBox(height: 20,),
-
-                                TextFormField(
-                                  initialValue: check.phoneNumber.toString(),
-
-                                  validator: (value) {
-                                    if(value!.isEmpty){
-                                      return 'Field is required'; 
-                                    }
-                                    return null;
-                                  },
-
-                                  decoration: InputDecoration(
-                                    labelText: 'Phone number *',
-                                    labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
-                                  ),
-                                ),
-
-                                SizedBox(height: 40,),
-
-                                Container(
-                                  height: 50,
-                                  width: 300,
-                                  margin: EdgeInsets.only(top: 30),
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Color.fromRGBO(52, 52, 52, 1)
-                                    ),
-                                    onPressed: (){
-                                      if(_formKey.currentState!.validate()){
-                                        _formKey.currentState!.save();
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) => CupertinoAlertDialog(
-                                            title: Center(child: Text('Confirm information')),
-                                            content: Container(
-                                              height: 50,
-                                              child: Column(
-                                                children: [
-                                                  Text('Are you sure about this information?'),
-                                                ],
-                                              ),
-                                            ),
-                                            actions: [
-                                              TextButton(
-                                                onPressed: () =>  Navigator.pop(context),
-                                                child: Text('Cancel'),
-                                              ),
-                                              TextButton(
-                                                onPressed: () {
-                                                  db.collection('Check out').add({
-                                                    'First name': check.firstName,
-                                                    'Last name': check.lastName,
-                                                    'Address': check.address,
-                                                    'Phone number': check.phoneNumber,
-                                                  }).then((value) => print('Added Data With ID: ${value.id}'));
-                                                  Navigator.pushNamed(context, '/Project (Check out page2)');
-                                                },
-                                                child: Text('Next'),
-                                              ),
-                                            ]     
-                                          )
-                                        );
+                                )
+                              );
+                            },
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                            
+                                  TextFormField(
+                                    initialValue: check.firstName,
+                            
+                                    validator: (value) {
+                                      if(value!.isEmpty){
+                                        return 'Field is required'; 
                                       }
-                                    }, 
-                                    child: Text('Continue to payment' , style: TextStyle(color: Colors.white , fontSize: 18),),
+                                      return null;
+                                    },
+                            
+                                    decoration: InputDecoration(
+                                      labelText: 'First name *',
+                                      labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
+                                    ),
+                            
                                   ),
-                                ),
-                                
-                              ]
-                            )
+                            
+                                  SizedBox(height: 20,),
+                            
+                                  TextFormField(
+                                    initialValue: check.lastName,
+                            
+                                    validator: (value) {
+                                      if(value!.isEmpty){
+                                        return 'Field is required'; 
+                                      }
+                                      return null;
+                                    },
+                            
+                                    decoration: InputDecoration(
+                                      labelText: 'Last name *',
+                                      labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
+                                    ),
+                            
+                                  ),
+                            
+                                  SizedBox(height: 20,),
+                            
+                                  TextFormField(
+                                    initialValue: check.address,
+                            
+                                    validator: (value) {
+                                      if(value!.isEmpty){
+                                        return 'Field is required'; 
+                                      }
+                                      return null;
+                                    },
+                            
+                                    decoration: InputDecoration(
+                                      labelText: 'Address*',
+                                      labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
+                                    ),
+                            
+                                    onChanged: (value) {
+                                      check.address = value;
+                                    },
+                            
+                                  ),
+                            
+                                  SizedBox(height: 20,),
+                            
+                                  TextFormField(
+                                    initialValue: check.phoneNumber.toString(),
+                            
+                                    validator: (value) {
+                                      if(value!.isEmpty){
+                                        return 'Field is required'; 
+                                      }
+                                      return null;
+                                    },
+                            
+                                    decoration: InputDecoration(
+                                      labelText: 'Phone number *',
+                                      labelStyle: TextStyle(color: Color.fromRGBO(119, 126, 144, 1))
+                                    ),
+                                  ),
+                            
+                                  SizedBox(height: 40,),
+                            
+                                  Container(
+                                    height: 50,
+                                    width: 300,
+                                    margin: EdgeInsets.only(top: 30),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Color.fromRGBO(52, 52, 52, 1)
+                                      ),
+                                      onPressed: (){
+                                        if(_formKey.currentState!.validate()){
+                                          _formKey.currentState!.save();
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) => CupertinoAlertDialog(
+                                              title: Center(child: Text('Confirm information')),
+                                              content: Container(
+                                                height: 50,
+                                                child: Column(
+                                                  children: [
+                                                    Text('Are you sure about this information?'),
+                                                  ],
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () =>  Navigator.pop(context),
+                                                  child: Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () {
+                                                    db.collection('Check out').add({
+                                                      'First name': check.firstName,
+                                                      'Last name': check.lastName,
+                                                      'Address': check.address,
+                                                      'Phone number': check.phoneNumber,
+                                                    }).then((value) => print('Added Data With ID: ${value.id}'));
+                                                    Navigator.pushNamed(context, '/Project (Check out page2)');
+                                                  },
+                                                  child: Text('Next'),
+                                                ),
+                                              ]     
+                                            )
+                                          );
+                                        }
+                                      }, 
+                                      child: Text('Continue to payment' , style: TextStyle(color: Colors.white , fontSize: 18),),
+                                    ),
+                                  ),
+                                  
+                                ]
+                              )
+                            ),
                           );
                         }
                       );

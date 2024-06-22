@@ -144,7 +144,7 @@ class _page9State extends State<page9> {
               ),
               IconButton(
                 onPressed: (){
-                  Navigator.pushNamed(context, '/Project (Order page1)');
+                  Navigator.pushNamed(context, '/Project (Order page)');
                 },
                 icon: Icon(Icons.shopping_bag_rounded),
               ),
