@@ -74,7 +74,7 @@ class page14 extends StatefulWidget {
 
 class _page14State extends State<page14> {
 
-  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines');
+  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines search page');
 
   bool _customTileExpanded1 = false;
   bool _customTileExpanded2 = false;
@@ -182,7 +182,7 @@ class _page14State extends State<page14> {
                                         children: [
                                           Text(widget.Name! , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20 , decoration: TextDecoration.underline),),
                                           Container(
-                                            margin: EdgeInsets.only(left: 180),
+                                            margin: EdgeInsets.only(left: 130),
                                             child: Text('JOD ${widget.Price}' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 23),)
                                           ),
                                         ],
@@ -283,7 +283,7 @@ class _page14State extends State<page14> {
                                     width: 372,
                                     margin: EdgeInsets.only(left: 8),
                                     child: ExpansionTile(
-                                      title: Text('How should I take ${medicine.Name}?' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18 , color: Colors.grey)),
+                                      title: Text('How should I take ${widget.Name}?' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 18 , color: Colors.grey)),
                                       trailing: Icon(
                                         _customTileExpanded3
                                         ? Icons.keyboard_arrow_down

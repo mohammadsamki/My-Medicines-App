@@ -66,7 +66,7 @@ class _page18State extends State<page18> {
   late Future<List<Cart>> cartFuture = fireStore.getCart('Cart');
 
   List counter1 = [1 , 1];
-  double totalPalance = 0;
+  double totalbalance = 0;
 
   void Refresh(){
     setState(() {
@@ -140,7 +140,7 @@ class _page18State extends State<page18> {
                       itemBuilder: (context , index){
                         final Cart = cart[index];
     
-                        totalPalance += (Cart.Price * counter1[index]);
+                        totalbalance += (Cart.Price * counter1[index]);
 
                         return Column(
                           children: [
@@ -289,7 +289,7 @@ class _page18State extends State<page18> {
                   ]
                 ),
                 child: Container(
-                  height: 280,
+                  height: 500,
                   child: Column(
                     children: [
 
@@ -303,8 +303,9 @@ class _page18State extends State<page18> {
                               child: Text('Product price' , style: TextStyle(color: Colors.grey , fontSize: 16),)
                             ),
                             Container(
+                              width: 88,
                               margin: EdgeInsets.only(top: 30 , left: 148),
-                              child: Text('JOD ${totalPalance}' , style: TextStyle(fontWeight: FontWeight.bold),),
+                              child: Text('JOD ${totalbalance}' , style: TextStyle(fontWeight: FontWeight.bold),),
                             ),
                             
                           ],
@@ -360,8 +361,9 @@ class _page18State extends State<page18> {
                               child: Text('Subtotal' , style: TextStyle(fontSize: 16 , fontWeight: FontWeight.bold),)
                             ),
                             Container(
+                              width: 100,
                               margin: EdgeInsets.only(left: 170),
-                              child: Text('JOD ${totalPalance}' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
+                              child: Text('JOD ${totalbalance}' , style: TextStyle(fontWeight: FontWeight.bold , fontSize: 20),),
                             ),
                             
                           ],
@@ -371,7 +373,7 @@ class _page18State extends State<page18> {
                       Container(
                         height: 50,
                         width: 300,
-                        margin: EdgeInsets.only(top: 30),
+                        margin: EdgeInsets.only(top: 80),
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Color.fromRGBO(52, 52, 52, 1)

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'Project (Check out page3).dart';
+import 'Project (Check out page2).dart';
 var db = FirebaseFirestore.instance;
 
 class check{
@@ -224,7 +224,7 @@ class _page22State extends State<page22> {
                             onTap: () {
                               Navigator.push(
                                 context, MaterialPageRoute(
-                                  builder:(context) => page24(
+                                  builder:(context) => page23(
                                     address: check.address,
                                   ),
                                 )

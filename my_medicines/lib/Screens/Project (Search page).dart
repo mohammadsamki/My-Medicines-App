@@ -86,7 +86,7 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   _fetchMedicines() async {
-    var medicines = await fireStore.getMedicines('Medicines');
+    var medicines = await fireStore.getMedicines('Medicines search page');
     setState(() {
       _allResults = medicines;
     });

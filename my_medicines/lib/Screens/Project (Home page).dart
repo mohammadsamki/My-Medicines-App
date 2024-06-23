@@ -84,7 +84,7 @@ class _page9State extends State<page9> {
     });
   }
 
-  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines');
+  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Antibiotics');
 
 
   int _selectedIndex = 0;
