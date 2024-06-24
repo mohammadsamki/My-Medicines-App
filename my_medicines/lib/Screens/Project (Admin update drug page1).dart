@@ -118,14 +118,14 @@ class _page28State extends State<page28> {
   final TextEditingController _searchController = TextEditingController();
 
   getClientStream() async {
-    var data = await fireStore.getMedicines('Medicines');
+    var data = await fireStore.getMedicines('Medicines search page');
     setState(() {
       _allResults = data;
     });
     searchResultList();
   }
 
-  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines');
+  late Future<List<medicine>> medicineFuture = fireStore.getMedicines('Medicines search page');
 
   @override
   Widget build(BuildContext context) {
@@ -362,7 +362,7 @@ class _page28State extends State<page28> {
                                                                   onPressed: (){
                                                                     if(_formKey.currentState!.validate()){
                                                                       _formKey.currentState!.save();
-                                                                      final update = db.collection('Medicines').doc(medicine.docId);
+                                                                      final update = db.collection('Medicines search page').doc(medicine.docId);
                                                                       update.update({'Name': medicine.Name , 'Description': medicine.Description , 'Warnings': medicine.Warnings , 'How should i take it': medicine.howShouldITakeIt , 'Side effects': medicine.sideEffects , 'Price': medicine.Price , 'Image': medicine.Image}).then(
                                                                         (value) => print("Document Snapshot successfully updated!"),
                                                                         onError: (e) => print("Error updating document $e"));
